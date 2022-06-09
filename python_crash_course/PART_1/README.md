@@ -2,6 +2,8 @@
 
 this python instruction is based on the book Python crash course 2nd edition by Eric Matthes.
 
+In Python, a single leading underscore indicates a helper method.
+
 ## Part 1
 
 some useful string static methods:
@@ -72,3 +74,4 @@ some other useful standard library:
 - assertIn(item, list)
 - assertNotIn(item, list)
 - setUp(self) method
+- inheritance from unittest.TestCase --> then unittest.main()

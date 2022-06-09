@@ -2,3 +2,5 @@ name: everything_about_python
 dependencies:
   - python=3.10.4
   - black=19.10b0
+  - pip:
+      - pygame=2.1.2
