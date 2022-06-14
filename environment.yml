@@ -3,4 +3,4 @@ dependencies:
   - python=3.10.4
   - black=19.10b0
   - pip:
-      - pygame=2.1.2
+      - pygame==2.1.2
