@@ -5,7 +5,7 @@ from settings import Settings
 
 
 class AlienInvasion:
-    """1st step: Pygame Window: drawing the game elements
+    """info: 1st step: Pygame Window: drawing the game elements
     Overall class to manage game assets and behavior.
     """
 
@@ -14,8 +14,8 @@ class AlienInvasion:
         pygame.init()
         self.settings = Settings()
 
-        # ! pygame.display.set_mode(size) --> a pygame window
-        # ! self.screen --> surface --> redraw by each loop
+        # info: pygame.display.set_mode(size) --> a pygame window
+        # info: self.screen --> surface --> redraw by each loop
         self.screen = pygame.display.set_mode(
             size=(self.settings.screen_width, self.settings.screen_height)
         )

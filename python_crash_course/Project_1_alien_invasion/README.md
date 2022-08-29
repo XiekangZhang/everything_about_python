@@ -1,14 +1,31 @@
 # Developing games with PyGame
 
-## main part
+## Steps
 
-- creating screen size to play the game: pygame.display.set_mode(size=())
-- setting game name: pygame.display.set_caption()
-- using none-stop loop to run the game and using: pygame.event.get(), event.type == pygame.QUIT --> sys.exit() to stop the game
-- setting background color: screen.fill(**RGB**)
-- updating game windows: pygame.display.flip()
+1. initialize the game's background settings: `pygame.init()`
+2. create game window: `screen = pygame.display.set_model((x, y))`
+3. set game caption: `pygame.display.set_caption("some_name")`
+4. use none-stop loop to run game:
 
-## element part
+```python
+import sys
+import pygame
 
-- drawing the game element: screen.blit(element, element_location)
-- pygame treats all game elements like rectangles: screen.get_rect()
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+```
+
+5. make the most recently drawn screen visible: `pgame.display.flip()`
+6. add color into background: `screen.fill((RGB))`
+7. (optional) find some [artwork](https://pixabay.com/)
+8. add game elements into the main window: _pygame treats all game elements like rectangles_
+    1. get the main window `screen = game.screen`
+    2. get the main window's rectangle `screen_rect = screen.get_rect()`
+    3. load _.bmp_ image `image = pygame.image.load(path_to_bmp)`
+    4. get image rectangle `image_rect = image.get_rect()`
+    5. locate image into main window: `rect.midbottom = screen_rect.midbottom`
+    6. show the image: ``ship.blitme()``
+
+
