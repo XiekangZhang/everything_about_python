@@ -26,6 +26,10 @@ while True:
     3. load _.bmp_ image `image = pygame.image.load(path_to_bmp)`
     4. get image rectangle `image_rect = image.get_rect()`
     5. locate image into main window: `rect.midbottom = screen_rect.midbottom`
-    6. show the image: ``ship.blitme()``
+    6. show the image: ``ship.blit()``
 
+## Other useful APIs
+- `pygame.KEYDOWN` to check whether a key is pressed or not
+- `pygame.K_RIGHT` right arrow key
+- `pygame.KEYUP` to check whether a pressed key is released again or not
 
