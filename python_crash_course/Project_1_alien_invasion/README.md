@@ -29,7 +29,19 @@ while True:
     6. show the image: ``ship.blit()``
 
 ## Other useful APIs
+
 - `pygame.KEYDOWN` to check whether a key is pressed or not
 - `pygame.K_RIGHT` right arrow key
 - `pygame.KEYUP` to check whether a pressed key is released again or not
+- `pygame.Rect(x, y, w, h)` to create a rectangle
+- `pygame.draw.rect(surface, color, what_to_draw)` to draw the rectangle
+- `pygame.sprite.Group()` to create a group of an element, it works like a list
+- `bullets.sprites()` returns a list of all sprites in the group _bullets_
+
+## Other remarks
+
+- from bottom to up with y decreases
+- The game takes more time to write output to the terminal than it does to draw graphics to the game window
+
+[more API](https://www.pygame.org/docs/)
 
