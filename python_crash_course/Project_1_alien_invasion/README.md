@@ -37,6 +37,7 @@ while True:
 - `pygame.draw.rect(surface, color, what_to_draw)` to draw the rectangle
 - `pygame.sprite.Group()` to create a group of an element, it works like a list
 - `bullets.sprites()` returns a list of all sprites in the group _bullets_
+- `sprite.groupcollide()` to check whether the elements overlap
 
 ## Other remarks
 
