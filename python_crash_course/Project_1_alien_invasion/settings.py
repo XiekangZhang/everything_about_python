@@ -23,3 +23,6 @@ class Settings:
         self.bullet_height = 15
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 15
+
+        # Game statistics
+        self.ship_limit = 3
