@@ -37,6 +37,11 @@ class Ship:
         """Draw the ship at its current location."""
         self.screen.blit(self.image, self.rect)
 
+    def center_ship(self):
+        """Center the ship on the screen"""
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)
+
     def update(self) -> None:
         """Update the ship's position based on the movement flag."""
         if self.moving_right and self.rect.right < self.screen_rect.right + (self.rect.right - self.rect.left) / 2:
