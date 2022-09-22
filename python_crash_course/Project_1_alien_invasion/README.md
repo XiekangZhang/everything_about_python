@@ -38,6 +38,7 @@ while True:
 - `pygame.sprite.Group()` to create a group of an element, it works like a list
 - `bullets.sprites()` returns a list of all sprites in the group _bullets_
 - `sprite.groupcollide()` to check whether the elements overlap
+- `rect.collidepoint()` to check whether the point of an event overlaps the region defined by rect
 
 ## Other remarks
 
