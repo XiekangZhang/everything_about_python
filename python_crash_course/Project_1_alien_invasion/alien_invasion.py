@@ -11,6 +11,7 @@ from ship import Ship
 from alien import Alien
 
 
+# TODO: add pressing p to start game as well
 class AlienInvasion:
     """info: 1st step: Pygame Window: drawing the game elements
     Overall class to manage game assets and behavior.
@@ -128,6 +129,9 @@ class AlienInvasion:
             self._create_fleet()
             self.ship.center_ship()
 
+            # Hide the mouse cursor
+            pygame.mouse.set_visible(False)
+
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group."""
         if len(self.bullets) < self.settings.bullets_allowed:
@@ -221,6 +225,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True)
 
     def _check_aliens_bottom(self):
         """Check if any aliens have reached the bottom of the screen"""
