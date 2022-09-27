@@ -1,7 +1,8 @@
 import pygame
+from pygame.sprite import Sprite
 
 
-class Ship:
+class Ship(Sprite):
     """A class to manage the ship."""
 
     def __init__(self, ai_game) -> None:
@@ -10,7 +11,7 @@ class Ship:
         Args:
             ai_game (_type_): _description_
         """
-
+        super().__init__()
         # info: Pygame treats all game elements like rectangles
         self.screen = ai_game.screen
         self.screen_rect = ai_game.screen.get_rect()
