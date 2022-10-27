@@ -5,3 +5,8 @@ The smaller the dataset is, the more likely it is to see something coincidental 
 meaningful. 
 
 ![test value](https://www.katacoda.com/embed/orm-thomas-nield/courses/oreilly-linear-regression-interactive/13-try-statistical-significance/assets/EHtEdDkNWn.svg)
+
+# How to Use Generators and yield in Python
+Used page: [Tutorial](https://www.simplilearn.com/tutorials/python-tutorial/yield-in-python)
+
+
