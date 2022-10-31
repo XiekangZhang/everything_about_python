@@ -8,3 +8,4 @@ dependencies:
       - scipy==1.9.0
       - matplotlib==3.6.1
       - plotly==5.10.0
+      - requests==2.28.1
