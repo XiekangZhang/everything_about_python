@@ -4,7 +4,7 @@ from plotly import offline
 
 if __name__ == "__main__":
     # Make an API call and store the response
-    url = "https://api.github.com/search/repositories?q=language:python&sort=stars"
+    url = "https://api.github.com/search/repositories?q=language:c++&sort=stars"
     headers = {"Accept": "application/vnd.github.v3+json"}
     r = requests.get(url, headers=headers)
     print(f"Status code: {r.status_code}")
@@ -12,9 +12,13 @@ if __name__ == "__main__":
     # INFO: convert the information to a Python dictionary
     response_dict = r.json()
     repo_dicts = response_dict["items"]
-    repo_names, stars, labels = [], [], []
+    repo_links, stars, labels = [], [], []
     for repo_dict in repo_dicts:
-        repo_names.append(repo_dict["name"])
+        repo_name = repo_dict["name"]
+        repo_url = repo_dict["html_url"]
+        repo_link = f"<a href='{repo_url}'>{repo_name}</a>"
+        repo_links.append(repo_link)
+
         stars.append(repo_dict["stargazers_count"])
         owner = repo_dict["owner"]["login"]
         description = repo_dict["description"]
@@ -24,7 +28,7 @@ if __name__ == "__main__":
     # Make visualization
     data = [{
         "type": "bar",
-        "x": repo_names,
+        "x": repo_links,
         "y": stars,
         "hovertext": labels,
         "marker": {
