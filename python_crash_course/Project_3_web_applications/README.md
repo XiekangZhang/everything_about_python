@@ -1,4 +1,5 @@
 # Getting started with Django
+[django query](https://docs.djangoproject.com/en/2.2/topics/db/queries/)
 - creating a project in django: _django-admin startproject __name__ ._
 - _manage.py_ is a short program that takes in commands --> working with databases and running servers
 
@@ -26,7 +27,14 @@
 - access a model by using _from _app_name_.models import _model_name__
 - list all information: __model_name_.objects.all()_
 - get the specific information __model_name_.objects.get(id=*)_
+  - other methods: id__exact, id__iexact, id__contains, id__icontains, id__startswith, id__istartswith, id__endswith, id__iendwith
+  - Lookups: __model_name__related_model__attribute/contains/isnull_=*_
 - find the related information (related with foreign key) by using __model_name_._model_name_set.all()_
+- add a new model: _m=_model_name_(*)_ then _m.save()_
+- update a model: _m.attribute=_new_value__ then _m.save()_ --> same for OneToManyField
+- ManyToManyField use combination of __model_name_.objects.create(*)_ then __model_name_._mtmField_.add(_model_)_
+- support exclude and filter methods: __model_name_.objects.exclude(*)_ and __model_name_.objects.filter(*)_
+- support order by: __model_name_.objects.order_by(*)_
 
 # Important commands
 - _django-admin startproject __name__ ._
