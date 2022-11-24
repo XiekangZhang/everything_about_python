@@ -9,7 +9,7 @@
 
 ## under app folder
 - _models.py_: defines the data
-- _admin.py_
+- _admin.py_: register each model
 - _views.py_
 
 ## Steps for creating Django Webserver
