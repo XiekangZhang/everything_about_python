@@ -18,6 +18,13 @@
 - make migration by using _python manage.py makemigrations __app_name___
 - apply this migration by using _python manage.py migrate_
 
+## Steps for making pages
+- defining URLs: adding _path('', include('_app_name_.urls'))_ into _urls.py_
+- creating _urls.py_ in app folder with _path_ and _views_ import, and _app_name_ and _urlpatterns_ variables
+- writing views: a view function takes in information from a request, prepares the data needed to generate a page,
+and then sends the data back to the browser
+- writing templates: defines what the page should look like. creating _templates/app_ folder under _app_ folder
+
 ## Create a superuser
 - create a superuser by giving _python manage.py createsuperuser_
 - register model into admin site under _admin.py_ by adding _admin.site.register(_model_name_)_
