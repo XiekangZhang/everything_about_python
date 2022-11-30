@@ -26,7 +26,8 @@ and then sends the data back to the browser
 - writing templates: defines what the page should look like. creating _templates/app_ folder under _app_ folder
 
 ## Page inheritance
-- template tag: _{% %}_ and _{% extends %}_ in child template
+- template tag: _{% url %}_, _{% extends %}_, _{% block/endblock content %}_
+_ _{% for/endfor %}_, _{% empty %}_
 
 ## Create a superuser
 - create a superuser by giving _python manage.py createsuperuser_
