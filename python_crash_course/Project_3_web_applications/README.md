@@ -28,6 +28,8 @@ and then sends the data back to the browser
 ## Page inheritance
 - template tag: _{% url %}_, _{% extends %}_, _{% block/endblock content %}_
 _ _{% for/endfor %}_, _{% empty %}_
+- In Django templates, a vertical line (|) represents a template filter -- a function that modifies the value in a 
+template variable. 
 
 ## Create a superuser
 - create a superuser by giving _python manage.py createsuperuser_

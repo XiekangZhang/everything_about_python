@@ -20,7 +20,7 @@ class Entry(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name_plural = "entries"
+        verbose_name_plural = "entries"  # INFO: Meta Class holds extra information for managing a model.
 
     def __str__(self):
         """Return a string representation of the model"""
