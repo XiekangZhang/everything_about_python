@@ -10,9 +10,12 @@ called _PyVarObject_, which has an _ob_size_ field holding the number of items i
 much faster than calling a method. 
 - Normally, your code should not have many direct calls to special methods. If you need to invoke a special
 method, it is usually better to call the related built-in function (e.g., len, iter, str, etc.).
+- The _abs_ built-in function returns the absolute value of integers and floats, and the magnitude of _complex_ numbers.
 
 ### Important feature
 - ``collections.namedtuple(subclass_name, constructor)``
 - ``__getitem__(self, position)`` to enable the custom collections to support slicing & iterable &
 ``in`` constraint
 - ``random.choice(iter)``
+- ``f"{value!s/r/a}"`` ! means format: _s => str(), r => repr(), a => ascii()_
+- ``__repr__(self)`` keeps the object ``__str__(self`` converts everything to string, it calls ``print()`` function
