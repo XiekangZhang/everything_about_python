@@ -28,6 +28,7 @@ and then sends the data back to the browser
 ## Page inheritance
 - template tag: _{% url %}_, _{% extends %}_, _{% block/endblock content %}_
 _ _{% for/endfor %}_, _{% empty %}_
+- _{% csrf_token %}_: prevent attackers from using the form to gain unauthorized access to the server
 - In Django templates, a vertical line (|) represents a template filter -- a function that modifies the value in a 
 template variable. 
 
@@ -48,6 +49,14 @@ template variable.
 - ManyToManyField use combination of __model_name_.objects.create(*)_ then __model_name_._mtmField_.add(_model_)_
 - support exclude and filter methods: __model_name_.objects.exclude(*)_ and __model_name_.objects.filter(*)_
 - support order by: __model_name_.objects.order_by(*)_
+
+## ModelForm
+- Any page that lets a user enter and submit information on a web page is a form.
+- Create _from.py_ under the folder of _model.py_.
+- Implement a class extends from _froms.ModelForm_ class, then define _Meta_ class
+- Adjust _urls.py_ to include urlpatterns
+- Implement the method in _views.py_ -> _request.method_, _form.is_valid()_, _form.save()_, _redirect()_
+- Link to the page
 
 # Important commands
 - _django-admin startproject __name__ ._
