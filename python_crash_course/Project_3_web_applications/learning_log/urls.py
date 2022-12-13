@@ -19,4 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),  # info: all the URLs that can be requested from the admin site.
     path("", include("learning_logs.urls")),
+    path("users/", include("users.urls")),
 ]
