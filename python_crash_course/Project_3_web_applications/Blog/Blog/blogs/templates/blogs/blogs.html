@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends "blogs/base.html" %}
+{% block content %}
+<p>Blogs</p>
+<ul>
+    {% for blog in blogs %}
+    <li>
+        <a href="{% url 'blogs:blog' blog.id%}">{{ blog }}</a>
+    </li>
+    {% empty %}
+    {% endfor %}
+</ul>
+
+<a href="{% url 'blogs:new_blog' %}">add new blog</a>
+{% endblock content%}
+</body>
+</html>

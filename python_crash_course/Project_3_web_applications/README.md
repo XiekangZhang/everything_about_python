@@ -6,6 +6,8 @@
 - _setting.py_: controls how Django interacts with your system and manages your project.
 - _url.py_: tells Django which pages to build in response to browser requests.
 - _wsgi.py_: helps Django serve the files it creates. (web server gateway interface)
+- In Django's authentication system, every template has a _user_ variable available, which always
+has an _is_authenticated_ attribute set.
 
 ## under app folder
 - _models.py_: defines the data
@@ -27,7 +29,7 @@ and then sends the data back to the browser
 
 ## Page inheritance
 - template tag: _{% url %}_, _{% extends %}_, _{% block/endblock content %}_
-_ _{% for/endfor %}_, _{% empty %}_
+_ _{% for/endfor %}_, _{% empty %}_, _{% if form.errors %}_, _{% endif %}_
 - _{% csrf_token %}_: prevent attackers from using the form to gain unauthorized access to the server
 - In Django templates, a vertical line (|) represents a template filter -- a function that modifies the value in a 
 template variable. 
