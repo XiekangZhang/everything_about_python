@@ -68,3 +68,4 @@ template variable.
 - _python manage.py makemigrations __app_name___
 - _python manage.py createsuperuser_
 - _python manage.py shell_
+- _python manage.py flush_: to rebuild the database structure. --> No user and no data anymore
