@@ -28,11 +28,13 @@ and then sends the data back to the browser
 - writing templates: defines what the page should look like. creating _templates/app_ folder under _app_ folder
 
 ## Page inheritance
-- template tag: _{% url %}_, _{% extends %}_, _{% block/endblock content %}_
+- template tag: _{% url %}_, _{% extends %}_, _{% block/endblock name %}_
 _ _{% for/endfor %}_, _{% empty %}_, _{% if form.errors %}_, _{% endif %}_
 - _{% csrf_token %}_: prevent attackers from using the form to gain unauthorized access to the server
 - In Django templates, a vertical line (|) represents a template filter -- a function that modifies the value in a 
-template variable. 
+template variable.
+- _{% load bootstrap4 %}_: syntax to load bootstrap
+
 
 ## Create a superuser
 - create a superuser by giving _python manage.py createsuperuser_
@@ -60,6 +62,11 @@ template variable.
 - Implement the method in _views.py_ -> _request.method_, _form.is_valid()_, _form.save()_, _redirect()_
 - Link to the page
 
+## Others
+- html: body --> nav --> main: Here we assign the bootstrap selector _container_, which is a simple way to group
+elements on a page.
+- a _jumbotron_, which is a large box that stands out from the rest of the page and can contain anything you want.
+
 # Important commands
 - _django-admin startproject __name__ ._
 - _python manage.py migrate_
@@ -69,3 +76,4 @@ template variable.
 - _python manage.py createsuperuser_
 - _python manage.py shell_
 - _python manage.py flush_: to rebuild the database structure. --> No user and no data anymore
+- _pip install django-bootstrap4_

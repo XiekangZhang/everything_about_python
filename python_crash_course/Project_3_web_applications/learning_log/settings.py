@@ -29,15 +29,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # my apps
+    "learning_logs",
+    "users",
+
+    # 3rd party
+    "bootstrap4",
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # my apps
-    "learning_logs",
-    "users",
 ]
 
 MIDDLEWARE = [
