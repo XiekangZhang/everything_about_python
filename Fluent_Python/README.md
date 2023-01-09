@@ -47,3 +47,5 @@ and other types of sequences you could use genexp.
 - Tuples with mutable items can be a source of bugs. An object is only hashable if its value cannot ever change. 
 
 ### Unpacking Sequences and Iterables
+- ```[record] = query_returning_single_row() or (record,)```
+- ``[[field]] = query_returning_single_row_with_single_field() or ((field,),)``
