@@ -40,12 +40,18 @@ implemented. Basically, _bool(x)_ calls ```x.__bool__()```. If ```__bool__``` is
 and other types of sequences you could use genexp.
 - The genexp yields items one by one. It is useful to produce output that you don't need to keep in memory.
 - ```:=```: walrus operator: remain accessible after listcomp or expressions return (no _global_, or _nonlocal_ declaration)
+- * treats list with individual element
 
 ### Tuples are not just immutable lists
 - Tuples hold records: each item in the tuple holds the data for field, and the position of the item gives its meaning.
 - Tuples as immutable lists: clarity & better performance.
 - Tuples with mutable items can be a source of bugs. An object is only hashable if its value cannot ever change. 
+- % treats tuple with individual element
 
 ### Unpacking Sequences and Iterables
 - ```[record] = query_returning_single_row() or (record,)```
 - ``[[field]] = query_returning_single_row_with_single_field() or ((field,),)``
+
+### Pattern Matching with Sequences
+- _match/case_: _str_, _bytes_, and _bytearray_ are not handled as sequences in the context of _match/case_.
+- _type(var)_ in _case_ will perform a runtime type check.
