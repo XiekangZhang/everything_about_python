@@ -55,3 +55,5 @@ and other types of sequences you could use genexp.
 ### Pattern Matching with Sequences
 - _match/case_: _str_, _bytes_, and _bytearray_ are not handled as sequences in the context of _match/case_.
 - _type(var)_ in _case_ will perform a runtime type check.
+
+### Slicing
