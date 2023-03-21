@@ -4,5 +4,6 @@ pytorch/yolo/datasets
 pytorch/yolo/runs
 pytorch/yolo/yolov8n_saved_model
 pytorch/yolo/yolov8n.onnx
-pytorch/yolo/yolov8n.pt
+pytorch/yolo/yolov8n*.pt
 pytorch/yolo/bus.jpg
+pytorch/yolo/images

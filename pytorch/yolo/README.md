@@ -1,5 +1,10 @@
 # Yolo Tutorial
 https://docs.ultralytics.com/
+- YOLO as a real-time object detector.
+- In machine learning terms, we can say all objects are detected via a single algorithm run. It's done by dividing
+an image into a grid and predicting bounding boxes and class probabilities for each cell in a grid.
+- a non-maximum suppression algorithm is applied to select the best bounding box for a given object.
+- two stage object detectors: find interest parts, then classify. However, yolo is one stage object detector.
 - One key feature of YOLOv8 is its extensibility. It is designed as a framework that supports all previous versions of YOLO,
 making it easy to switch between different versions and compare their performance.
 
