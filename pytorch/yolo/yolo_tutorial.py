@@ -6,7 +6,7 @@ from io import BytesIO
 import cv2
 from ultralytics import YOLO
 import torch
-
+import tensorflow as tf
 
 def box_label(image, box, label="", color=(128, 128, 128), txt_color=(255, 255, 255)):
     lw = max(round(sum(image.shape) / 2 * 0.001), 2)
@@ -223,12 +223,22 @@ def plot_bboxes(image, boxes, conf=0.01):
 
 if __name__ == "__main__":
     # T1: Yolo testen
-    print(ultralytics.checks())
-    print(torch.cuda.is_available())
-    print(torch.__version__)
+    # print(ultralytics.checks())
+    # print(torch.cuda.is_available())
+    # print(torch.__version__)
     # image = cv2.imread("./images/Testpic1.jpg")
     # image = np.asarray(image)
-    model = YOLO("yolov8n.pt")
-    results = model.predict(source="./images/Testpic1.jpg", save=True, conf=0.5, save_txt=True)
+    # model = YOLO("yolov8n.pt")
+    # results = model(source="bus.jpg", save=True, conf=0.5, save_txt=True)
+    # model.export(format="onnx")
+    # res_plotted = results[0].plot()
+    # cv2.imshow("result", res_plotted)
     # print(results[0].boxes.boxes)
     # plot_bboxes(image, results[0].boxes.boxes, conf=0.01)
+
+    # small test
+    model = tf.keras.models.Sequential([
+        tf.keras.layers.Input(shape=(640, 640)),
+        tf.keras.layers.Dense(units=1280, activation="relu")
+    ])
+    print(model.summary())

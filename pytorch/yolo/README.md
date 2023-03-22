@@ -1,5 +1,7 @@
 # Yolo Tutorial
 https://docs.ultralytics.com/
+
+https://github.com/ultralytics/yolov5/wiki#tutorials
 - YOLO as a real-time object detector.
 - In machine learning terms, we can say all objects are detected via a single algorithm run. It's done by dividing
 an image into a grid and predicting bounding boxes and class probabilities for each cell in a grid.
