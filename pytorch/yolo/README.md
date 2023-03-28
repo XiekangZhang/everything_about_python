@@ -76,3 +76,5 @@ benchmark(model='yolov8n.pt', imgsz=640, half=False, device=0)
 ## YOLOv8 Tasks
 YOLOv8 is an AI framework that supports multiple computer vision tasks. The framework can be used to perform
 detection, segmentation, classification, and keypoints detection. 
+
+## YOLOv8 Train Custom Data

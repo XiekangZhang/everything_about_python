@@ -6,7 +6,7 @@ from io import BytesIO
 import cv2
 from ultralytics import YOLO
 import torch
-import tensorflow as tf
+
 
 def box_label(image, box, label="", color=(128, 128, 128), txt_color=(255, 255, 255)):
     lw = max(round(sum(image.shape) / 2 * 0.001), 2)
@@ -228,8 +228,8 @@ if __name__ == "__main__":
     # print(torch.__version__)
     # image = cv2.imread("./images/Testpic1.jpg")
     # image = np.asarray(image)
-    model = YOLO("yolov8n.pt")
-    results = model(source="20230328_101127.mp4", save=True, conf=0.25, save_txt=True)
+    # model = YOLO("yolov8n.pt")
+    # results = model(source="bus.jpg", save=True, conf=0.25, save_txt=True)
     # model.export(format="onnx")
     # res_plotted = results[0].plot()
     # cv2.imshow("result", res_plotted)
@@ -237,7 +237,7 @@ if __name__ == "__main__":
     # plot_bboxes(image, results[0].boxes.boxes, conf=0.01)
 
     # small test
-    model = tf.keras.models.Sequential([
+    """model = tf.keras.models.Sequential([
         tf.keras.layers.Input(shape=(640, 640)),
         tf.keras.layers.Dense(units=1280, activation="relu")
     ])
@@ -250,5 +250,16 @@ if __name__ == "__main__":
     hidden_layer4 = tf.keras.layers.Dense(units=160, activation="relu", name="hidden_layer_4")(hidden_layer3)
     output_layer = tf.keras.layers.Dense(units=1, activation="linear", name="output")(hidden_layer4)
     model1 = tf.keras.models.Model(inputs=input_layer, outputs=output_layer, name="my model")
-    print(model1.summary())
-    #tf.keras.utils.plot_model(model1, "bbb.png", show_shapes=True)
+    print(model1.summary())"""
+    # tf.keras.utils.plot_model(model1, "bbb.png", show_shapes=True)
+
+    ## Test on Overwatch
+    model = YOLO("/mnt/Documents/Workspace/python/everything_about_python/pytorch/yolo/runs/detect/train/weights/best.pt")
+    # model.train(data="datasets/data.yaml", epochs=10, imgsz=640)
+    # model.export(format="saved_model")
+    model(
+        source="/mnt/Documents/Workspace/python/everything_about_python/pytorch/yolo/datasets/test/images/00000002_png.rf.35cbdc149758457e68bef2fe3b514e30.jpg",
+        save=True,
+        conf=0.25,
+        save_txt=True,
+    )
