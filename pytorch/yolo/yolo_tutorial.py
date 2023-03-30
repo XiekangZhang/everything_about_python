@@ -228,8 +228,8 @@ if __name__ == "__main__":
     # print(torch.__version__)
     # image = cv2.imread("./images/Testpic1.jpg")
     # image = np.asarray(image)
-    # model = YOLO("yolov8n.pt")
-    # results = model(source="bus.jpg", save=True, conf=0.25, save_txt=True)
+    model = YOLO("yolov8n-seg.pt")
+    results = model(source="bus.jpg", save=True, conf=0.25, save_txt=True)
     # model.export(format="onnx")
     # res_plotted = results[0].plot()
     # cv2.imshow("result", res_plotted)
@@ -254,12 +254,12 @@ if __name__ == "__main__":
     # tf.keras.utils.plot_model(model1, "bbb.png", show_shapes=True)
 
     ## Test on Overwatch
-    model = YOLO("/mnt/Documents/Workspace/python/everything_about_python/pytorch/yolo/runs/detect/train/weights/best.pt")
+    #model = YOLO("/mnt/Documents/Workspace/python/everything_about_python/pytorch/yolo/runs/detect/train/weights/best.pt")
     # model.train(data="datasets/data.yaml", epochs=10, imgsz=640)
     # model.export(format="saved_model")
-    model(
-        source="/mnt/Documents/Workspace/python/everything_about_python/pytorch/yolo/datasets/test/images/00000002_png.rf.35cbdc149758457e68bef2fe3b514e30.jpg",
-        save=True,
-        conf=0.25,
-        save_txt=True,
-    )
+    #model(
+    #    source="/mnt/Documents/Workspace/python/everything_about_python/pytorch/yolo/datasets/test/images/00000002_png.rf.35cbdc149758457e68bef2fe3b514e30.jpg",
+    #    save=True,
+    #    conf=0.25,
+    #    save_txt=True,
+    #)
