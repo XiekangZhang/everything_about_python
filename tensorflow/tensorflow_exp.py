@@ -8,6 +8,7 @@ def get_data():
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
     x_train, x_test = x_train / 255.0, x_test / 255.0
 
+    # * add a chaneels dimension
     x_train = x_train[..., tf.newaxis].astype("float32")
     x_test = x_test[..., tf.newaxis].astype("float32")
 
@@ -41,9 +42,7 @@ def train_step(model, images, labels, objective, losses, accuracy, optimizer):
         predictions = model(images, training=True)
         loss = objective(labels, predictions)
     gradients = tape.gradient(loss, model.trainable_variables)
-    optimizer.apply_gradients(
-        zip(gradients, model.trainable_variables)
-    )
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
     losses(loss)
     accuracy(labels, predictions)
@@ -59,7 +58,7 @@ def test_step(model, images, labels, objective, losses, accuracy):
 
 if __name__ == "__main__":
     model = MyModel()
-    
+
     train_ds, test_ds = get_data()
 
     loss_object = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
@@ -78,7 +77,15 @@ if __name__ == "__main__":
         test_accuracy.reset_states()
 
         for images, labels in train_ds:
-            train_step(model, images, labels, loss_object, train_loss, train_accuracy, optimizer)
+            train_step(
+                model,
+                images,
+                labels,
+                loss_object,
+                train_loss,
+                train_accuracy,
+                optimizer,
+            )
 
         for test_images, test_labels in test_ds:
             test_step(
