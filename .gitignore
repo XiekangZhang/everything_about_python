@@ -7,3 +7,4 @@ pytorch/yolo/yolov8n.onnx
 pytorch/yolo/yolov8n*.pt
 pytorch/yolo/bus.jpg
 pytorch/yolo/images
+NN/__pycache__
