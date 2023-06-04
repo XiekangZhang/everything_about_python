@@ -240,8 +240,7 @@ class Base:
 if TYPE_CHECKING:
     import collections
     test = collections.namedtuple("test", ["name", "id"])
-    def fun(arg: test) -> None:
-
+    def fun(arg: test) -> None: pass
 
 if __name__ == "__main__":
     # * TypeAlias
