@@ -2,11 +2,12 @@
 # @author: Xiekang
 import math
 import sys
+import random
 # ! placeholder -> do it later
 Matrix = str
 ActivationFunction = str
 
-def neuro(neuro_input: float, activation_function: str, parameter: float = 0.0) -> float:
+def neuro(neuro_input: float, activation_function: str = "linear", parameter: float = 0.0) -> float:
     match activation_function.lower():
         case "linear": return neuro_input
         case "binary": return 0 if neuro_input < 0 else 1
@@ -23,4 +24,27 @@ def neuro(neuro_input: float, activation_function: str, parameter: float = 0.0) 
         case "softplus": return math.log1p(1+math.exp(neuro_input))
         case _:
             print("Does not support given activation function", file=sys.stderr)
-    return 0.0
+    return -100.0
+
+def neural_network(input_values: list, hidden_layers_with_neuro_number: list, neuro_output_layer: int = 1, weight_split_method: str = "evenly") -> list[float]:
+    number_of_neuro_in_input_layer = len(input_values)
+    weights = []
+    for _ in range(number_of_neuro_in_input_layer):
+        weight = []
+        for hidden_layers_input in hidden_layers_with_neuro_number:
+            weight = [0] * hidden_layers_input
+        weights.append(weight)
+    return weights
+
+if __name__ == "__main__":
+    """print(neuro(0.5, "linear"))
+    print(neuro(0.5, "binary"))
+    print(neuro(0.5, "sigmoid"))
+    print(neuro(0.5, "tanh"))
+    print(neuro(0.5, "arctan"))
+    print(neuro(0.5, "relu"))
+    print(neuro(0.5, "prelu", 0.3))
+    print(neuro(0.5, "elu", 0.12))
+    print(neuro(0.5, "softplus"))
+    print(neuro(0.5, "bbbbbbbb"))"""
+    print(neural_network([0.5, 0.5], [2, 3]))
