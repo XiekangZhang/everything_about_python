@@ -40,12 +40,13 @@ def neuro(
 
 def neural_network(
     input_values: list,
-    hidden_layers_with_neuro_number: list,
+    hidden_layers_with_neuro_number: list, # ! first focus on 1 hidden layer
     neuro_output_layer: int = 1,
     weight_split_method: str = "evenly",
 ) -> list[float]:
     number_of_neuro_in_input_layer = len(input_values)
     weights = []
+    # * define weights based on each neuro
     for _ in range(number_of_neuro_in_input_layer):
         weight = []
         for hidden_layers_input in hidden_layers_with_neuro_number:
@@ -54,11 +55,26 @@ def neural_network(
             elif weight_split_method == "randomly":
                 weight = [random.random() for _ in range(hidden_layers_input)]
                 s = sum(weight)
-                weight = [w/s for w in weight]
+                weight = [w / s for w in weight]
             else:
                 raise RuntimeError("no support weight split method!")
         weights.append(weight)
-    return weights
+
+    # * matrix multiple
+    hidden_layers_input_values = []
+    for index in range(len(weights[0])):
+        hidden_layers_input_value = []
+        for w in weights:
+            hidden_layers_input_value.append(w[index])
+        hidden_layers_input_values.append(
+            sum([i * w for i, w in zip(input_values, hidden_layers_input_value)])
+        )
+
+    # * output
+    hidden_layers_output_values = []
+    for value in hidden_layers_input_values:
+        hidden_layers_output_values.append(neuro(value))
+    return hidden_layers_output_values
 
 
 if __name__ == "__main__":
@@ -72,5 +88,5 @@ if __name__ == "__main__":
     print(neuro(0.5, "elu", 0.12))
     print(neuro(0.5, "softplus"))
     print(neuro(0.5, "bbbbbbbb"))"""
-    print(sys.float_info)
-    print(neural_network([0.5, 0.5], [3], weight_split_method="bbbbb"))
+    # print(sys.float_info)
+    print(neural_network([0.5, 0.5], [2], weight_split_method="randomly"))
