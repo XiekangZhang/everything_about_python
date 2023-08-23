@@ -35,14 +35,19 @@ def neuro(
             return math.log1p(1 + math.exp(neuro_input))
         case _:
             print("Does not support given activation function", file=sys.stderr)
+            """for _ in range(10):
+                with open("text.txt", "a") as f:
+                    print("bsljdfaslkfjlsjfdsklajfslf", file=f)"""
     return -100.0
 
 
 def neural_network(
     input_values: list,
-    hidden_layers_with_neuro_number: list, # ! first focus on 1 hidden layer
-    neuro_output_layer: int = 1,
-    weight_split_method: str = "evenly",
+    hidden_layers_with_neuro_number: list,  # ! first focus on 1 hidden layer --> [3] --> 1 hidden layer + 3 neuros
+    # ! [3, 2] --> 2 hidden layers --> 3 neuros, 2 neuros
+    neuro_output_layer: int = 1,  # ! based on problem
+    weight_split_method: str = "evenly", # ! Sepration of the weights
+    **kwargs # ! unlimted parameters (key = value)
 ) -> list[float]:
     number_of_neuro_in_input_layer = len(input_values)
     weights = []
@@ -78,7 +83,7 @@ def neural_network(
 
 
 if __name__ == "__main__":
-    """print(neuro(0.5, "linear"))
+    """print(neuro(0.5))
     print(neuro(0.5, "binary"))
     print(neuro(0.5, "sigmoid"))
     print(neuro(0.5, "tanh"))
@@ -87,6 +92,7 @@ if __name__ == "__main__":
     print(neuro(0.5, "prelu", 0.3))
     print(neuro(0.5, "elu", 0.12))
     print(neuro(0.5, "softplus"))
-    print(neuro(0.5, "bbbbbbbb"))"""
+    print(neuro(0.03, parameter=0.78, activation_function="bbbbb"))"""
+    # print(neuro(0.5, "bbbbbbbb"))
     # print(sys.float_info)
     print(neural_network([0.5, 0.5], [2], weight_split_method="randomly"))
