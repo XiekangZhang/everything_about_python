@@ -3,4 +3,9 @@ dependencies:
   - python=3.12.4
   - pip
   - pip:
-      - ultralytics==8.2.71
+      - pandas==2.2.2
+      - numpy==2.0.1
+      - matplotlib==3.9.1
+      - scipy==1.14.0
+      - networkx==3.3
+      - pytest==8.3.2
