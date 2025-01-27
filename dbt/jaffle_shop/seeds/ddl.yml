@@ -1,0 +1,16 @@
+seeds:
+  - name: customers_rep
+    config:
+      schema: 
+      column_types:
+        ID: string
+        FIRST_NAME: string
+        LAST_NAME: string
+  - name: orders_rep
+    config:
+      schema: 
+      column_types:
+        ID: string
+        USER_ID: string
+        ORDER_DATE: date
+        STATUS: string
