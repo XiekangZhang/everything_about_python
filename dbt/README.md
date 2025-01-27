@@ -74,10 +74,45 @@
 | --- | ------- | ---------- | -------------- | ------------ |
 | 1   | pending | 2024-01-01 | 2024-01-01     | 2024-01-02   |
 | 1   | shipped | 2024-01-02 | 2024-01-02     | null         |
+
 - Configure your snapshots in YAML files to tell dbt how to detect record changes. _dbt snapshot_
 
 ### seeds
 
+- Seeds are CSV files in your dbt project, that dbt can load into your data warehouse using the _dbt seed_ command. Seeds are best suited
+  to static data which changes infrequently. _dbt seeds_
+
+### Jinja and macros
+
+```jinja
+  Expression: {{ ... }}
+  Statements: {% ... %}
+  Comments: {# ... #}
+```
+
+- jinja
+
+```jinja
+{% set payment_methods = ["bank_transfer", "credit_card", "gift_card"] %}
+  select
+    order_id,
+      {% for payment_method in payment_methods %}
+      sum(case when payment_method = '{{payment_method}}' then amount end) as {{payment_method}}_amount,
+      {% endfor %}
+      sum(amount) as total_amount
+  from app_data.payments
+  group by 1
+```
+
+- macros in Jinja are peices of code that can be reused multiple times - they are analogous to "functions" in other programming languages, and are extremely useful if you find yourself repeating code across multiple models.
+
+```jinja
+{% macro cents_to_dollars(column_name, sacle=2) %}
+  ({{ column_name }} / 100)::numeric(16, {{ scale }})
+{% endmacro %}
+```
+### Metrics
+- MetricFlow is a SQL query generation tool designed to streamline metric creation across different data dimensions for diverse business needs.
 ## dbt tips
 
 - use the _+_ operator on the left of a model _dbt build --select +model_name_ to run a model and all of its upstream dependencies.
@@ -86,3 +121,7 @@
 - use the _--full-refresh_ flag to rebuild an incremental model from scratch.
 - use _seeds_ to create manual lookup tables, like zip codes to states or marketing UTMs to campaigns. _dbt seed_ will build these from CSVs into your warehouse and make them _ref_ able in your models.
 - unit tests must be defined in a YML file in your _models/_ directory.
+- _dbt compile_ and then _dbt test_
+
+## dbt implementation
+- _dbt init <project_name>_
