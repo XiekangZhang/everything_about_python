@@ -125,3 +125,6 @@
 
 ## dbt implementation
 - _dbt init <project_name>_
+
+# dbt Fundamentals
+sources, models, tests, docs and deployment

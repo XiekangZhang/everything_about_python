@@ -1,11 +1,7 @@
-{{ config(
-    materialized = 'table'
-) }}
-
 WITH customers AS (
 
     SELECT
-        customer_id,
+        id as customer_id,
         first_name,
         last_name
     FROM

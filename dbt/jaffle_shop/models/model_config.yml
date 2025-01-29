@@ -1,0 +1,12 @@
+
+version: 2
+
+models:
+  - name: customer_orders
+    description: "combination of customers and orders tables"
+    columns:
+      - name: customer_id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null
