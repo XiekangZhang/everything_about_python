@@ -1,0 +1,9 @@
+version: 2
+
+seeds:
+- name: customers_empty
+  config:
+    column_types:
+      id: String
+      first_name: String
+      last_name: String

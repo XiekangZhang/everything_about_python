@@ -111,8 +111,11 @@
   ({{ column_name }} / 100)::numeric(16, {{ scale }})
 {% endmacro %}
 ```
+
 ### Metrics
+
 - MetricFlow is a SQL query generation tool designed to streamline metric creation across different data dimensions for diverse business needs.
+
 ## dbt tips
 
 - use the _+_ operator on the left of a model _dbt build --select +model_name_ to run a model and all of its upstream dependencies.
@@ -124,7 +127,10 @@
 - _dbt compile_ and then _dbt test_
 
 ## dbt implementation
+
 - _dbt init <project_name>_
 
 # dbt Fundamentals
-sources, models, tests, docs and deployment
+
+- Traditional Data Teams --> Modern Data Teams:
+  - Data Analytics & Data Engineer --> Data Analytics & Analytics Engineer (T) & Data Engineer
