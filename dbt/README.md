@@ -32,12 +32,80 @@
   - _macro-paths_
   - _snapshot-paths_
   - _docs-paths_
-  - _vars_
+  - _vars_: e.g., _materialized_
+- **sources**
+
+  - configure the source once in a _.yml_ file. --> no manuel change about source table in staging any more.
+  - lineage marks the source with green.
+
+  ```yml
+  # /models/xxx.yml --> sources for raw table
+  version: 2
+  sources:
+    - name: <source_name>
+      database: <database_name>
+      schema: <schema_name>
+      tables:
+        - name: <table_name1>
+          loaded_at_field: <timestamp_column>
+          freshness: # table level freshness
+            warn_after: { count: 6, period: hour }
+            error_after: { count: 24, period: day }
+          filter: <timestamp_column> >= date_sub(current_date(), interval 1 day)
+        - name: <table_name2>
+          identifier: <private_key_column>
+  ```
+
+  ```yml
+  # /models/xxx.yml --> sources for test and documentation
+  version: 2
+  sources:
+    - name: <source_name>
+      description: <description>
+      tables:
+        - name: <table_name1>
+          description: >
+            <description>
+          columns:
+            - name: <column_name1>
+              description: <description>
+              data_tests: # now newly named as data_tests
+                - unique
+                - not_null
+                - relationships
+                - accepted_values
+  ```
+
+  - use _dbt source freshness_ to check the freshness of data
+  - use _dbt test --select source:\<source_name>_ to run the test on sources
+
+- **tests**
+
+  ```yml
+  # /models/xxx.yml --> data test
+  version: 2
+  models:
+    - name: <source_name>
+      description: <description>
+        columns:
+          - name: <column_name1>
+            description: <description>
+            data_tests: # now newly named as data_tests
+              - unique
+              - not_null
+              - relationships
+              - accepted_values
+  ```
+
+  - use _dbt test [--select \<model> test_type:generic|singular]_ to run test
+  - single test (under _/tests/xxx.sql_) vs generic test (in _.yml_)
 
 ### models
 
-- Models are primarily written as a _select_ statement and saved as a _.sql_ file.
+- Models are primarily written as a _select_ statement and saved as a _.sql_ file, which define the transformed data schema.
 - Python models are also supported for training or deploying data science models, complex transformations, or where a specific Python package meets a need.
+- model pipeline
+- Source --> Staging --> Intermediate --> Fact --> Dimension
 
 #### SQL models
 
@@ -45,7 +113,7 @@
 
 - When you run a Python model, the full result of the final **DataFrame** will be saved as a table in your data warehouse.
 - _def model(dbt, session) -> DataFrame:_
-- _dbt run --select model_
+- _dbt run --select model | folder_name_
 
 ### tests
 
@@ -54,11 +122,11 @@
 #### unit tests
 
 - when to add a unit test to your model:
-  - When your SQL contains complex logic:
-    - Regex, Data Math, Window functions, case when, Truncation
-  - When you are writing custom logic to process input data
-  - Logic for which you had bugs reported before
-  - Prior to refactoring the transformation logic
+- When your SQL contains complex logic:
+  - Regex, Data Math, Window functions, case when, Truncation
+- When you are writing custom logic to process input data
+- Logic for which you had bugs reported before
+- Prior to refactoring the transformation logic
 - _dbt run --select "stg_customers top_level_emal_domains" --empty_ to build an empty version of the models to save warehouse spend
 
 ### documentation
@@ -85,9 +153,9 @@
 ### Jinja and macros
 
 ```jinja
-  Expression: {{ ... }}
-  Statements: {% ... %}
-  Comments: {# ... #}
+Expression: {{ ... }}
+Statements: {% ... %}
+Comments: {# ... #}
 ```
 
 - jinja

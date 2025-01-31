@@ -1,0 +1,8 @@
+version: 2
+sources:
+  - name: jaffle_shop
+    database: xiekang-playground
+    schema: playground
+    tables:
+      - name: customers
+      - name: orders
