@@ -79,27 +79,6 @@
   - use _dbt source freshness_ to check the freshness of data
   - use _dbt test --select source:\<source_name>_ to run the test on sources
 
-- **tests**
-
-  ```yml
-  # /models/xxx.yml --> data test
-  version: 2
-  models:
-    - name: <source_name>
-      description: <description>
-        columns:
-          - name: <column_name1>
-            description: <description>
-            data_tests: # now newly named as data_tests
-              - unique
-              - not_null
-              - relationships
-              - accepted_values
-  ```
-
-  - use _dbt test [--select \<model> test_type:generic|singular]_ to run test
-  - single test (under _/tests/xxx.sql_) vs generic test (in _.yml_)
-
 ### models
 
 - Models are primarily written as a _select_ statement and saved as a _.sql_ file, which define the transformed data schema.
@@ -118,6 +97,25 @@
 ### tests
 
 #### data tests
+
+```yml
+# /models/xxx.yml --> data test
+version: 2
+models:
+  - name: <source_name>
+    description: <description>
+      columns:
+        - name: <column_name1>
+          description: <description>
+          data_tests: # now newly named as data_tests
+            - unique
+            - not_null
+            - relationships
+            - accepted_values
+```
+
+- use _dbt test [--select \<model> test_type:generic|singular]_ to run test
+- single test (under _/tests/xxx.sql_) vs generic test (in _.yml_)
 
 #### unit tests
 
@@ -197,6 +195,9 @@ Comments: {# ... #}
 ## dbt implementation
 
 - _dbt init <project_name>_
+- _dbt build_ vs _dbt run_ and _dbt test_
+  - _dbt build_: creates a model and then runs the tests on this model. If the tests fail, no further downstream models are created.
+  - _dbt run_ then _dbt test_: test will happen after all models are created.
 
 # dbt Fundamentals
 
