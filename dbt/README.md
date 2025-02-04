@@ -110,11 +110,18 @@ models:
           data_tests: # now newly named as data_tests
             - unique
             - not_null
-            - relationships
             - accepted_values
+        - name: <foreign_key>
+          tests:
+            - relationships:
+                to: ref('xxx')|source('xxx')
+                field: primary_key
+
+
 ```
 
 - use _dbt test [--select \<model> test_type:generic|singular]_ to run test
+- use _dbt test --select source:\*_ to run tests on sources
 - single test (under _/tests/xxx.sql_) vs generic test (in _.yml_)
 
 #### unit tests
@@ -129,7 +136,16 @@ models:
 
 ### documentation
 
-- documentation have to be written and stored in _.md_ extension.
+- add _description_ in yml files.
+- write large documentation separately into a _.md_ file, with macros
+
+```jinja
+{% docs doc_name %}
+{% enddocs %}
+```
+
+and add `description: '{{ doc("doc_name") }}'` back to yml files
+- use _dbt docs generate_ to generate documentation
 
 ### snapshots
 
@@ -203,3 +219,4 @@ Comments: {# ... #}
 
 - Traditional Data Teams --> Modern Data Teams:
   - Data Analytics & Data Engineer --> Data Analytics & Analytics Engineer (T) & Data Engineer
+- 
