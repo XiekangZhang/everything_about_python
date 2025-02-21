@@ -1,0 +1,4 @@
+[sqlfluff]
+dialect = bigquery
+templater = dbt
+exclude_rules = ST06

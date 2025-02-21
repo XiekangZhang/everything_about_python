@@ -145,6 +145,7 @@ models:
 ```
 
 and add `description: '{{ doc("doc_name") }}'` back to yml files
+
 - use _dbt docs generate_ to generate documentation
 
 ### snapshots
@@ -219,4 +220,27 @@ Comments: {# ... #}
 
 - Traditional Data Teams --> Modern Data Teams:
   - Data Analytics & Data Engineer --> Data Analytics & Analytics Engineer (T) & Data Engineer
-- 
+
+# dbt Certified Developer Path
+
+## Refactoring SQL for Modularity
+
+- CTE: Common Table Expression
+
+## Jinja, Macros, and Packages
+
+### Jinja Basics
+
+```jinja
+{%- set my_cool_string = 'wow! cool' -%}
+{{ my_cool_string }}
+
+{% set my_animals = ['lemur', 'wolf', 'panther', 'tardigrade'] %}
+{{ my_animals[0] }}
+
+{%- if xxx -%}
+{%- else -%}
+{% endif %}
+
+{%- set my_dict={key: value} -%}
+```
