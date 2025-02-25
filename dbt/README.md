@@ -231,6 +231,8 @@ Comments: {# ... #}
 
 ### Jinja Basics
 
+- whitespace control `[%-|-%]`
+
 ```jinja
 {%- set my_cool_string = 'wow! cool' -%}
 {{ my_cool_string }}
@@ -244,3 +246,116 @@ Comments: {# ... #}
 
 {%- set my_dict={key: value} -%}
 ```
+
+### Jinja applications
+
+- dynamic setting a variables based on a query
+
+```jinja
+{% set results = run_query("SELECT DISTINCT category FROM " ~ ref('products')) %}
+
+{% if execute %}
+  {% set categories = results.columns[0].values() %}
+{% else %}
+  {% set categories = [] %}
+{% endif %}
+
+-- Now you can use the 'categories' variable in your SQL
+SELECT
+  {% for category in categories %}
+    SUM(CASE WHEN category = '{{ category }}' THEN sales ELSE 0 END) AS "{{ category }}_sales"{% if not loop.last %},{% endif %}
+  {% endfor %}
+FROM {{ ref('sales_data') }}
+```
+
+### macros
+
+- Macros are a way of writing functions in Jinja.
+
+```jinja
+{% macro <function_name>(parameters...) %}
+<code_logic>
+{% endmacro %}
+
+{{ function_name(values...) }}
+```
+
+### package
+
+- `dbt deps` to install packages
+
+```yml
+pacakges:
+  - git:
+    revision: <branch_name>
+  - package:
+    version:
+  - local: <local_path>
+```
+
+### Advanced Jinja and Macros
+
+```jinja
+{% macro grant_select(schema=target.schema, role=target.role) %}
+
+  {% set sql %}
+  grant usage on schema {{ schema }} to role {{ role }};
+  grant select on all tables in schema {{ schema }} to role {{ role }};
+  grant select on all views in schema {{ schema }} to role {{ role }};
+  {% endset %}
+
+  {{ log('Granting select on all tables and views in schema ' ~ target.schema ~ ' to role ' ~ role, info=True) }}
+  {% do run_query(sql) %}
+  {{ log('Privileges granted', info=True) }}
+{% endmacro %}
+```
+
+```jinja
+{%- macro union_tables_by_prefix(database, schema, prefix) -%}
+  {%- set tables = dbt_utils.get_relations_by_prefix(database=database, schema=schema, prefix=prefix) -%}
+  {% for table in tables %}
+      {%- if not loop.first -%}
+      union all
+      {%- endif %}
+      select * from {{ table.database }}.{{ table.schema }}.{{ table.name }}
+  {% endfor -%}
+{%- endmacro -%}
+```
+
+```jinja
+{% macro clean_stale_models(database=target.database, schema=target.schema, days=7, dry_run=True) %}
+{% set get_drop_commands_query %}
+        select
+            case
+                when table_type = 'VIEW'
+                    then table_type
+                else
+                    'TABLE'
+            end as drop_type,
+            'DROP ' || drop_type || ' {{ database | upper }}.' || table_schema || '.' || table_name || ';'
+        from {{ database }}.information_schema.tables
+        where table_schema = upper('{{ schema }}')
+        and last_altered <= current_date - {{ days }}
+{% endset %}
+
+{{ log('\nGenerating cleanup queries...\n', info=True) }}
+{% set drop_queries = run_query(get_drop_commands_query).columns[1].values() %}
+{% for query in drop_queries %}
+  {% if dry_run %}
+    {{ log(query, info=True) }}
+  {% else %}
+    {{ log('Dropping object with command: ' ~ query, info=True) }}
+    {% do run_query(query) %}
+    {% endif %}
+{% endfor %}
+{% endmacro %}
+```
+
+## Advanced Materializations
+
+- Materialization handles how to build your model
+  - tables
+  - views: saved query
+  - ephemeral: the `final/model` table will not be created. It used as a `CTE`
+  - incremental: which records are new, it will not rebuild the table.
+  - snapshots: underlying table + which rows are changed. --> changed data will be added into new rows.
