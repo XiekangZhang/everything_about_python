@@ -1,4 +1,4 @@
-# dbt Tutorial
+# dbt
 
 - when you install dbt core, you will also need to install the specific **adapter** for your database, connect to dbt core, and set up a **profiles.yml** file.
 
@@ -132,7 +132,7 @@ models:
 - When you are writing custom logic to process input data
 - Logic for which you had bugs reported before
 - Prior to refactoring the transformation logic
-- _dbt run --select "stg_customers top_level_emal_domains" --empty_ to build an empty version of the models to save warehouse spend
+- _dbt run --select "stg_customers top_level_email_domains" --empty_ to build an empty version of the models to save warehouse spend
 
 ### documentation
 
@@ -216,20 +216,20 @@ Comments: {# ... #}
   - _dbt build_: creates a model and then runs the tests on this model. If the tests fail, no further downstream models are created.
   - _dbt run_ then _dbt test_: test will happen after all models are created.
 
-# dbt Fundamentals
+## dbt Fundamentals
 
 - Traditional Data Teams --> Modern Data Teams:
   - Data Analytics & Data Engineer --> Data Analytics & Analytics Engineer (T) & Data Engineer
 
-# dbt Certified Developer Path
+## dbt Certified Developer Path
 
-## Refactoring SQL for Modularity
+### Refactoring SQL for Modularity
 
 - CTE: Common Table Expression
 
-## Jinja, Macros, and Packages
+### Jinja, Macros, and Packages
 
-### Jinja Basics
+#### Jinja Basics
 
 - whitespace control `[%-|-%]`
 
@@ -247,7 +247,7 @@ Comments: {# ... #}
 {%- set my_dict={key: value} -%}
 ```
 
-### Jinja applications
+#### Jinja applications
 
 - dynamic setting a variables based on a query
 
@@ -268,7 +268,7 @@ SELECT
 FROM {{ ref('sales_data') }}
 ```
 
-### macros
+#### macros
 
 - Macros are a way of writing functions in Jinja.
 
@@ -280,7 +280,7 @@ FROM {{ ref('sales_data') }}
 {{ function_name(values...) }}
 ```
 
-### package
+#### package
 
 - `dbt deps` to install packages
 
@@ -293,7 +293,7 @@ pacakges:
   - local: <local_path>
 ```
 
-### Advanced Jinja and Macros
+#### Advanced Jinja and Macros
 
 ```jinja
 {% macro grant_select(schema=target.schema, role=target.role) %}
@@ -351,7 +351,7 @@ pacakges:
 {% endmacro %}
 ```
 
-## Advanced Materializations
+### Advanced Materializations
 
 - Materialization handles how to build your model
   - tables
