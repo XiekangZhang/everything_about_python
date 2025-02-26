@@ -354,8 +354,75 @@ pacakges:
 ### Advanced Materializations
 
 - Materialization handles how to build your model
-  - tables
-  - views: saved query
   - ephemeral: the `final/model` table will not be created. It used as a `CTE`
-  - incremental: which records are new, it will not rebuild the table.
-  - snapshots: underlying table + which rows are changed. --> changed data will be added into new rows.
+  - views: saved query. Starting with _views_
+  - tables: if the view query lasts too long, change to _tables_
+  - incremental: keep the old table, and add the new records, working with `unique_key='<id>'` to activate `merge` query. If dbt builds lasts too long, switch to _incremental_
+    - `is_incremental()` checks 4 conditions --> only true, true, true, false
+      1. Does this model already exist as an object in the database
+      2. Is that database object a table?
+      3. Is this model configured with `materialized='incremental'`?
+      4. Was the `--full-refresh` flag passed to this `dbt run`?
+    - incremental materialization limitations --> ignorance grade e.g., cutoff vs late arrvials (weekly `--full-refresh`)
+    - What about truly massive datasets?
+      - always rebuild past 3 days. Fully ignore late arrvials
+      - always replace data at the partition level
+      - no unique keys - `merge` is expensive than `insert` (usually: `update` + `insert` > `delete` + `insert`)
+    - Should I use an incremental model?
+      - Good candidates
+        - Immutable event streams: tall + skinny table, append-only, no updates
+        - if there are any updates, a reliable _updated_at_ field
+      - Not-so-good candidates
+        - you have small-ish data
+        - your data changes constantly: new columns, renamed columns, etc.
+        - your data is updated in unpredictable ways
+        - your transformation performs comparions or calculations that require other rows
+    - To sum up: Most incremental models are **approximately correct**, windows function has to be defined. Prioritizing correctness can negate performance gains from incrementality
+  - snapshots: underlying table + which rows are changed. --> changed data will be added into new rows. Using `dbt snapshot`
+    ```jinja
+    {% snapshot mock_orders %}
+    {% set new_schema = target.schema + '_snapshot' %}
+    {{ config(target_database='analytics',
+              target_schema=new_schema,
+              unique_key='order_id',
+              strategy='timestamp',
+              updated_at='updated_at')
+    }}
+    select * from analytics.{{target.schema}}.mock_orders
+    {% endsnapshot %}
+    ```
+
+### Analyses and Seeds
+
+#### Analyses
+
+- it is used to test your queries before modifying database
+- sql files in the analyses folder, no models and no tests
+- support jinja
+- can be compiled with `dbt compile`
+
+#### Seeds
+
+- csv files in the data folder
+- build a table from a small amount of data in a csv files by using `dbt seed`
+- _models_ can _ref_ seed
+- using `dbt seed --models <model_name>` to run seed including test --> needing _.yml_
+
+### Exposures
+
+## Other tipps
+
+- `describe table {{ source(......)}}` to have an overview of the table
+
+### Change Data Capture (CDC) vs Slowly Changing Dimensions (SCD)
+
+- CDC - it's about the how of detecting changes
+  - to efficiently replicate changes from source systems to target systems in near real-time
+  - to minimize the impact on source systems by only transferring changed data
+- SCD - it's about the how of storing historical data
+  - to maintain a historical record of changes in dimension tables, allowing for accurate historical analysis
+  - to provide context for historical data by preserving past versions of dimension records
+  - Types:
+    - SCD Type 1: overwrites existing data
+    - SCD Type 2: creates a new row for each change
+    - SCD Type 3: adds a new column to store previous values
