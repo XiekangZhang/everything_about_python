@@ -410,6 +410,77 @@ pacakges:
 
 ### Exposures
 
+- fully document your data ecosystem
+- you can use `dbt run --select +exposure:*`
+
+```yml
+exposures:
+  - name: orders_data
+    label: orders_data
+    type: notebook
+    maturity: high
+    url: https://tinyurl.com/jaffle-shop-reporting
+    description: "Exposure for orders data"
+    depends_on:
+      - ref('fct_orders')
+      - metric(xxx)
+    owner:
+      name: Michael McData
+      email: data@jaffleshop.com
+```
+
+- _exposures_ are always used with _metrics_.
+
+```yml
+semantic_models: ...
+metrics: ...
+```
+
+- running metric to see a result: `dbt sl query --metrics xxx`
+
+### Understanding state
+
+- `dbt run --select state:modified+`
+- `dbt retry` starting building models further where it failed last time
+
+### dbt Mesh
+
+- Monolithic data strucutre vs dbt Mesh
+- dbt Mesh: decentralized data --> to give the right people the right permission and the right report, like different departments
+
+#### Model Governance
+
+##### Model Contracts
+
+- allow you to guarantee the shape of your model
+  - columns & names
+  - data type of each column
+  - materialized type
+- adding `contract: enforced: true` flag into your model _.yml_ file
+
+##### Model versions
+
+- rename model name to _model_v2.sql_
+- `ref('model', v=2)` `dbt run -s xxx version:latest`
+
+```yml
+models:
+  - name: xxxx
+    latest_version: 2
+    versions:
+      - v: 1
+        config:
+          alias: xxxxxx
+      - v: 2
+        columns:
+          - include: xxx
+            exclude: xxx
+          - name: xxx
+            data_type: xxx
+```
+
+##### Groups and Access Modifiers
+
 ## Other tipps
 
 - `describe table {{ source(......)}}` to have an overview of the table
