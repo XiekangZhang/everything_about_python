@@ -481,9 +481,135 @@ models:
 
 ##### Groups and Access Modifiers
 
+- help to navigate to your needing models. Useful for large project
+
+```yml
+groups:
+  - name: finance
+    owner:
+      name: Firstname Lastname
+      email: finance@jaffleshop.com
+      slack: finance-data
+      github: finance-data-team
+  - name: product
+    owner:
+      email: product@jaffleshop.com
+      github: product-data-team
+```
+
+- access modifiers: _public, protected, private_
+
+```yml
+groups:
+  - name: fct_orders
+    group: finance
+    access: public
+```
+
+#### Multi-Project Collaboration
+
+- better for collaborate
+
+##### Cross-Project Ref
+
+- set up `dependencies.yml` then `{{ ref('<project_name>', '<model_name>') }}`
+
+```yml
+projects:
+  - name: core_platform
+```
+
+##### Cross-Project Orchestration
+
+- run downstream project after upstream project runnning
+
+### Advanced Testing
+
+- interactive / ad hoc queries
+
+```sql
+select custom_id
+from customers
+group by customer_id
+having count(*) > 1
+```
+
+- standalone saved query
+
+#### Test coverage
+
+- `dbt run-operation <required_tests>`
+- _dbt_meta_testing_ package
+- _freshness test_ only working on source
+- you can adding `{{ config(required_tests=None) }}` to exclude the specific models out of tests
+
+#### Test Deployment & Commands
+
+- `dbt test --select model1 model2` to run test on both models
+- `dbt test --select model1,model2` to run test on interaction of models
+- `dbt test --select test_type=singluar|generic`
+- `dbt test --exclude model1`
+- `dbt test --store-failures`
+- best way: `dbt build --fail-fast`
+
+#### Custom Tests
+
+- singular test in sql
+- generic singular test using `{% test <function_name(parameters)> %}...{% endtest %}` marcos and migrate the test into _yml_ file
+
+#### Tests in Packages
+
+```jinja
+{#
+-- use this set if you are comparing to a legacy model, rather than another dbt model
+-- {% set old_etl_relation=adapter.get_relation(
+--       database=target.database,
+--       schema="old_etl_schema",
+--       identifier="fct_orders"
+-- ) -%}
+#}
+
+-- use this set if you are comparing to another dbt model
+{% set old_etl_relation=ref('orders__deprecated') %}
+
+-- this is your newly built dbt model
+{% set dbt_relation=ref('orders') %}
+
+{{ audit_helper.compare_relations(
+    a_relation=old_etl_relation,
+    b_relation=dbt_relation,
+    primary_key="order_id"
+) }}
+```
+
+#### Test Configurations
+
+```yml
+models:
+  - name: customers
+    description: One record per customer
+    columns:
+      - name: customer_id
+        description: Primary Key
+        data_tests:
+          - unique:
+            config:
+              where: "order_date > '2018-03-01'" # like sql
+              limit: 10 # like sql
+              store_failures: true|false #
+              schema: test_failures # specified which schema should be used to store the failures --> change the suffix
+          - not_null:
+            config:
+              severity: warn|error #
+              error_if: ">100" #
+              warn_if: ">50" #
+```
+
 ## Other tipps
 
 - `describe table {{ source(......)}}` to have an overview of the table
+- `dbt_utils`, `dbt_expectations`, `audit_helper` are necessary packages for every dbt project
+- overwriting tests by using the same name
 
 ### Change Data Capture (CDC) vs Slowly Changing Dimensions (SCD)
 
