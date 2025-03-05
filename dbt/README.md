@@ -605,11 +605,39 @@ models:
               warn_if: ">50" #
 ```
 
+### Advanced Deployment
+
+- direct promotion vs indirect promotion (QA Branch) --> only run on custom branch
+- adding `tags` to minimize building models
+
+#### Common deployment jobs
+
+- standard job with `dbt build`
+- full refresh job with `dbt build --full-refresh`: rebuild incremental models and seeds
+- time sensitive
+- fresh rebuild
+
+#### CI
+
+- best practices `dbt run -s state:modified+` + `dbt test -s state:modified+` + _defer_ (compare state)
+- by activating webhooks --> trigger after pull request
+
+#### custom environment behavior & environment variables
+
+- you can use `target.schema` and `target.name` to custom environment behavior
+- `{{ env_var('DBT_MY_ENV', '<default_value>') }}` to get environment variable
+
 ## Other tipps
 
 - `describe table {{ source(......)}}` to have an overview of the table
 - `dbt_utils`, `dbt_expectations`, `audit_helper` are necessary packages for every dbt project
 - overwriting tests by using the same name
+- What might happen if two overlapping jobs attempt to run the same database model at the same time? --> Only the first job will complete, and the second will remain queued
+
+### Cron
+
+- minute hour day(month) month day(week) --> `*/30 6-23 * * 1-5` --> every 30 minutes, for hours between 6am and 11pm UTC, from Monday to Friday
+- `15,45 0-4,8-23 * * 0` every 15 and 45 of hour between 0-4 and 8-23 on Sunday
 
 ### Change Data Capture (CDC) vs Slowly Changing Dimensions (SCD)
 
