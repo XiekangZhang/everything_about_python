@@ -685,3 +685,60 @@ def model(dbt, session):
 ### jinja
 
 - Filters `{{ name | striptags | title }}`
+
+## Jinja Data Structures & Methods Overview
+
+Jinja offers a few core data structures for templating:
+
+**1. Lists (Arrays)**
+
+* **Creation:** `[1, 2, "a"]`, `[]`
+* **Methods/Filters:**
+    * `| length`: Get list length.
+    * `| first`: Get first element.
+    * `| last`: Get last element.
+    * `| join(sep)`: Join elements with separator.
+    * `| sort`: Sort list.
+    * `| reverse`: Reverse list.
+    * `| map(attr)`: Apply function to elements.
+    * `| select(attr)`: Filter list.
+    * `append(value)`: add item to the end (using `{% do %}`)
+* **Access:** `list[index]`
+
+**2. Dictionaries (Maps)**
+
+* **Creation:** `{"key": "value", "num": 123}`, `{}`
+* **Methods:**
+    * `.items()`: Get key-value pairs.
+    * `.keys()`: Get keys.
+    * `.values()`: Get values.
+    * `.update(dict)`: Merge/update (using `{% do %}`).
+* **Access:** `dict["key"]`, `dict.key`
+
+**3. Strings**
+
+* **Creation:** `"Hello"`, `'World'`
+* **Methods/Filters:**
+    * `| length`: Get string length.
+    * `| upper`: Convert to uppercase.
+    * `| lower`: Convert to lowercase.
+    * `| replace(old, new)`: Replace substrings.
+    * `| trim`: Remove whitespace.
+    * `| title`: Capitalize words.
+    * `| split(sep)`: Split string.
+    * string slicing: `string[start:end]`
+* **Concatenation:** `string1 ~ string2`
+
+**4. Numbers (Integers, Floats)**
+
+* **Arithmetic:** `+`, `-`, `*`, `/`, `//`, `%`, `**`
+* **Filters:**
+    * `| round(precision)`: Round number.
+* **Comparisons:** `==`, `!=`, `>`, `<`, `>=`, `<=`
+
+**Key Notes:**
+
+* Jinja is primarily for templating, not complex logic.
+* `{% do %}` is needed for in-place modifications (e.g., `append()`, `update()`).
+* Filters (`|`) transform data.
+* Jinja is not python, and does not have classes like python does.
