@@ -651,3 +651,37 @@ models:
     - SCD Type 1: overwrites existing data
     - SCD Type 2: creates a new row for each change
     - SCD Type 3: adds a new column to store previous values
+
+### dbt Clone
+
+- copy a data object without underlying data
+  - requirements
+    - job run successfully on _prod_ environment
+    - _defer_ is activated in _prod_
+    - `dbt clone`
+
+### grants
+
+- you can configure _grants_ for example in _dbt_project.yml_ to apply grants
+
+```yml
+seeds:
+  - name: seed_name
+    config:
+      grants:
+        select: []
+```
+
+### python models
+
+- perform analysis using tools from opne-source python ecosystem
+
+```py
+def model(dbt, session):
+  ...
+  return final_df
+```
+
+### jinja
+
+- Filters `{{ name | striptags | title }}`
