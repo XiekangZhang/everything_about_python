@@ -686,59 +686,150 @@ def model(dbt, session):
 
 - Filters `{{ name | striptags | title }}`
 
-## Jinja Data Structures & Methods Overview
+#### Jinja Data Structures & Methods Overview
 
 Jinja offers a few core data structures for templating:
 
 **1. Lists (Arrays)**
 
-* **Creation:** `[1, 2, "a"]`, `[]`
-* **Methods/Filters:**
-    * `| length`: Get list length.
-    * `| first`: Get first element.
-    * `| last`: Get last element.
-    * `| join(sep)`: Join elements with separator.
-    * `| sort`: Sort list.
-    * `| reverse`: Reverse list.
-    * `| map(attr)`: Apply function to elements.
-    * `| select(attr)`: Filter list.
-    * `append(value)`: add item to the end (using `{% do %}`)
-* **Access:** `list[index]`
+- **Creation:** `[1, 2, "a"]`, `[]`
+- **Methods/Filters:**
+  - `| length`: Get list length.
+  - `| first`: Get first element.
+  - `| last`: Get last element.
+  - `| join(sep)`: Join elements with separator.
+  - `| sort`: Sort list.
+  - `| reverse`: Reverse list.
+  - `| map(attr)`: Apply function to elements.
+  - `| select(attr)`: Filter list.
+  - `append(value)`: add item to the end (using `{% do %}`)
+- **Access:** `list[index]`
 
 **2. Dictionaries (Maps)**
 
-* **Creation:** `{"key": "value", "num": 123}`, `{}`
-* **Methods:**
-    * `.items()`: Get key-value pairs.
-    * `.keys()`: Get keys.
-    * `.values()`: Get values.
-    * `.update(dict)`: Merge/update (using `{% do %}`).
-* **Access:** `dict["key"]`, `dict.key`
+- **Creation:** `{"key": "value", "num": 123}`, `{}`
+- **Methods:**
+  - `.items()`: Get key-value pairs.
+  - `.keys()`: Get keys.
+  - `.values()`: Get values.
+  - `.update(dict)`: Merge/update (using `{% do %}`).
+- **Access:** `dict["key"]`, `dict.key`
 
 **3. Strings**
 
-* **Creation:** `"Hello"`, `'World'`
-* **Methods/Filters:**
-    * `| length`: Get string length.
-    * `| upper`: Convert to uppercase.
-    * `| lower`: Convert to lowercase.
-    * `| replace(old, new)`: Replace substrings.
-    * `| trim`: Remove whitespace.
-    * `| title`: Capitalize words.
-    * `| split(sep)`: Split string.
-    * string slicing: `string[start:end]`
-* **Concatenation:** `string1 ~ string2`
+- **Creation:** `"Hello"`, `'World'`
+- **Methods/Filters:**
+  - `| length`: Get string length.
+  - `| upper`: Convert to uppercase.
+  - `| lower`: Convert to lowercase.
+  - `| replace(old, new)`: Replace substrings.
+  - `| trim`: Remove whitespace.
+  - `| title`: Capitalize words.
+  - `| split(sep)`: Split string.
+  - string slicing: `string[start:end]`
+- **Concatenation:** `string1 ~ string2`
 
 **4. Numbers (Integers, Floats)**
 
-* **Arithmetic:** `+`, `-`, `*`, `/`, `//`, `%`, `**`
-* **Filters:**
-    * `| round(precision)`: Round number.
-* **Comparisons:** `==`, `!=`, `>`, `<`, `>=`, `<=`
+- **Arithmetic:** `+`, `-`, `*`, `/`, `//`, `%`, `**`
+- **Filters:**
+  - `| round(precision)`: Round number.
+- **Comparisons:** `==`, `!=`, `>`, `<`, `>=`, `<=`
 
 **Key Notes:**
 
-* Jinja is primarily for templating, not complex logic.
-* `{% do %}` is needed for in-place modifications (e.g., `append()`, `update()`).
-* Filters (`|`) transform data.
-* Jinja is not python, and does not have classes like python does.
+- Jinja is primarily for templating, not complex logic.
+- `{% do %}` is needed for in-place modifications (e.g., `append()`, `update()`).
+- Filters (`|`) transform data.
+- Jinja is not python, and does not have classes like python does.
+
+### Node selection syntax
+
+| command       | argument(s)                                               |
+| ------------- | --------------------------------------------------------- |
+| run           | --select, --exclude, --selector, --defer                  |
+| test          | --select, --exclude, --selector, --defer                  |
+| seed          | --select, --exclude, --selector                           |
+| ls            | --select, --exclude, --selector, --resource-type          |
+| compile       | --select, --exclude, --selector, --inline                 |
+| freshness     | --select, --exclude, --selector                           |
+| build         | --select, --exclude, --selector, --resource-type, --defer |
+| docs generate | --select, --exclude, --selector                           |
+
+- `--exclude` exclude models from your run
+- `--defer` makes it possible to run a subset of models or tests in a sandbox environment without having to first build their upstream parents. It is usually used with `--state` together. `dbt test --select 'model_b' --defer --state <prod-run-artifacts>`
+- Node selector methods
+
+| wildcard | description                                               |
+| -------- | --------------------------------------------------------- |
+| \*       | matches any number of any characters (including none)     |
+| ?        | matches any single character                              |
+| [abc]    | matches one character given in the bracket                |
+| [a-z]    | matches one character from the range given in the bracket |
+
+- operators
+
+```sh
+dbt run --select "+my_model+|+my_model|my_model+"
+dbt run --select "3+my_model+4"
+
+# the @ operator is similar to +, but will also include all ancestors of all descendants of the selected model
+dbt run --select "@my_model"
+
+# unions
+dbt run --select "+snowplow_sessions +fct_orders"
+
+# intersections
+dbt run --select "stg_invoices+,stg_accounts+,tag:nightly"
+
+dbt list --select "*.folder_name.*"
+dbt list --select "access:public|config.materialized:incremental|group:finance|+metric:weekly_active_users|source:snowplow+|semantic_model:*|fqn:some_model" # fully qualified names (FQN) is composed of the project name, suddirectories with the path, and the file name without extension separated by periods
+dbt run --select "result:error|fail" --state path/to/artifacts
+
+dbt run --select "state:modified|old|unmodified"
+
+dbt test --select "test_name:unique"
+dbt test --select "test_type:unit|data|generic|singular"
+dbt test --select "unit_test:*"
+
+dbt list --select "version:latest"
+
+```
+
+- _selector_ simplifies running complex commands
+
+```sh
+# without selectors
+dbt run --select @source:snowplow,tag:nightly models/export --exclude package:snowplow,config.materialized:incremental export_performance_timing
+```
+
+```yml
+# with selectors
+selectors:
+  - name: nightly_diet_snowplow
+    description: "Non-incremental Snowplow models that power nightly exports"
+    definition:
+      union:
+        - intersection:
+            - "@source:snowplow"
+            - "tag:nightly"
+        - "models/export"
+        - exclude:
+            - intersection:
+                - "package:snowplow"
+                - "config.materialized:incremental"
+            - export_performance_timing
+```
+
+```sh
+# then
+dbt run --selector nightly_diet_snowplow
+```
+
+### dbt_project.yml
+- dbt demarcates between a folder name and a configuration by using a `+` prefix before the configuration name.
+## dbt Explorer
+
+- project overview
+- project performance
+- project recommendation
