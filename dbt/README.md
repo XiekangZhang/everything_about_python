@@ -827,7 +827,29 @@ dbt run --selector nightly_diet_snowplow
 ```
 
 ### dbt_project.yml
-- dbt demarcates between a folder name and a configuration by using a `+` prefix before the configuration name.
+
+- dbt demarcates between a folder name and a configuration by using a `+` prefix before the configuration name. --> use the `+` prefix to help clarify the difference between resource paths and configs in _dbt_project.yml_ files.
+
+### DAG Auditing & how we structure our dbt projects
+
+#### DAG Auditing
+
+- are there any direct joins from sources into an intermediate model? (staging model is needed for each source to be cleaned and standardized)
+- do sources join directly together? (staging model is needed)
+- are there any rejoining of upstream concepts?
+- are models in the same layer dependent on each other?
+- dbt project needs a defined end point
+- is there repeated logic found in multiple models?
+
+#### How we structure our dbt projects
+
+- staging: creating our atoms, our initial modular building blocks, from source data
+  - subdirectories based on the source system
+  - file name: _stg\_[source]\_\_[entitys].sql_
+  
+- intermediate: stacking layers of logic with clear and specific purposes to prepare our staging models to join into the entities we want
+- marts: brigning together our modular pieces into a wide, rich vison of the entities our organization cares about
+
 ## dbt Explorer
 
 - project overview
