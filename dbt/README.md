@@ -633,6 +633,9 @@ models:
 - `dbt_utils`, `dbt_expectations`, `audit_helper` are necessary packages for every dbt project
 - overwriting tests by using the same name
 - What might happen if two overlapping jobs attempt to run the same database model at the same time? --> Only the first job will complete, and the second will remain queued
+- `{% do exceptions.warn(...) %}` and `{{ exceptions.raise_compiler_error(...)}}`
+- `{% if execute %}`
+- `target.name`
 
 ### Cron
 
@@ -846,9 +849,58 @@ dbt run --selector nightly_diet_snowplow
 - staging: creating our atoms, our initial modular building blocks, from source data
   - subdirectories based on the source system
   - file name: _stg\_[source]\_\_[entitys].sql_
-  
+  - the most standard types of staging model transformations are:
+    - Renaming
+    - Type casting
+    - Basic computations e.g., cents to dollars
+    - categorizing e.g., `case when`
+  - materialized as views
+  - staging models are the only place we'll use the `source` macro, and our staging models should have a 1-to-1 relationship to our source tables.
 - intermediate: stacking layers of logic with clear and specific purposes to prepare our staging models to join into the entities we want
+  - subdirectories based on business groupings
+  - file name: _int\_[source]\_\_[entity]s\_[verb]s.sql_
+  - materialized ephemerally | materialized as views in a custom schema with special permissions
 - marts: brigning together our modular pieces into a wide, rich vison of the entities our organization cares about
+  - group by department or area of concern
+  - name by entity
+  - materialized as tables or incremental models
+  - wide and denormalized (modern way)
+
+### Exposures
+
+- available properties
+  - required: **name**, **type: dashboard|notebook|analysis|ml|application**, **owner: name & email**
+  - expected: **depends_on: - ref(...) | - source(...) | - metric(...)**
+  - optional: **label**, **url**, **maturity**, **description**, **tags**, **meta**
+
+### env_var function
+
+- you can use `{{ env_var('variable_name', 'default_value') }}` in all _.yml_ file
+
+### grants
+
+```yml
+models:
+  +grants:
+    select: ["user_a", "user_b"]
+
+# add new grantees
+{{ config(grants = {'+select': ['user_c']}) }}
+
+# conditional grants
+models:
+  +grants:
+    select: "{{ ['user_a', 'user_b'] if target.name == 'prod' else ['user_c'] }}"
+
+# BigQuery examples
+{{ config(grants={'roles/bigquery.dataViewer': ['user:someone@yourcompany.com']}) }}
+
+models:
+  - name: specific_model
+    config:
+      grants:
+        roles/bigquery.dataViewer: ['user:someone@yourcompany.com']
+```
 
 ## dbt Explorer
 
