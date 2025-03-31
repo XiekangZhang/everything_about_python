@@ -636,6 +636,7 @@ models:
 - `{% do exceptions.warn(...) %}` and `{{ exceptions.raise_compiler_error(...)}}`
 - `{% if execute %}`
 - `target.name`
+- `dbt --record-timing-info | -r xxx.txt run` --> `snakeviz xxx.txt`
 
 ### Cron
 
