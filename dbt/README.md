@@ -886,7 +886,7 @@ models:
     select: ["user_a", "user_b"]
 
 # add new grantees
-{{ config(grants = {'+select': ['user_c']}) }}
+{{ config(grants = {'+select': ['user_c']} }}
 
 # conditional grants
 models:
@@ -894,7 +894,7 @@ models:
     select: "{{ ['user_a', 'user_b'] if target.name == 'prod' else ['user_c'] }}"
 
 # BigQuery examples
-{{ config(grants={'roles/bigquery.dataViewer': ['user:someone@yourcompany.com']}) }}
+{{ config(grants={'roles/bigquery.dataViewer': ['user:someone@yourcompany.com']} }}
 
 models:
   - name: specific_model
@@ -903,8 +903,109 @@ models:
         roles/bigquery.dataViewer: ['user:someone@yourcompany.com']
 ```
 
+### model governance
+
+#### model access
+
+- make models with right access modificator, e.g., _public_, _private_ (same group), _protected_ (same project)
+- _access_ level should be used with _group_ together
+- it is recommended to set the access modifier of a new model to _private_ to prevent other project resources from taking dependencies on models not intentionally designed for sharin across groups
+
+#### model contracts
+
+- supported
+  - SQL models
+  - _table_, _view_, _incremental_ with _on_schema_change: append_new_columns | fail_
+- when enforced, your contract must include every column's _name_ and _data_type_
+
+#### model versions
+
+- model version could be used with _deprecation_date_ together
+- you need but create a new model `<old_data_model>_v<version>.sql`
+- in _.yml_ file you only need to write down the differences between the previous version and actual version
+  ```yml
+  models:
+    - name: dim_customers
+      latest_version: 1
+      config:
+        materialized: table
+        contract: { enforced: true }
+      columns:
+        - name: customer_id
+          description: this is the primary key
+          data_type: int
+        - name: country_name
+          description: where this customer lives
+          data_type: varchar
+      versions:
+        - v: 1 # matches what's above -- nothing more meeded
+          config:
+            alias: dim_customers
+        - v: 2
+          columns:
+            - include: all
+              exclude: [country_name] # mark only the diff
+  ```
+- `{{ ref('my_dbt_project', 'my_model', v='3') }}` to use different version in ref jinja
+
+```bash
+dbt run --select dim_customers.v2 | dim_customers_v2
+dbt run -s dim_customers,version:latest
+```
+
+#### project dependencies
+
+- the _dependencies.yml_ file can contain both types of dependencies: "package" and "project" dependencies
+- Project dependencies vs. Package dependencies
+  - project dependencies are designed for the dbt Mesh and cross-project reference workflow. But private packages and jinja are not supported in _dependencies.yml_.
+  - package dependencies allow you to add source code from someone else's dbt project into your own, like a library. Use _packages.yml_ to include packages, including private packages and supporting jinja.
+
+### deployment and testing
+
+- PR template from dbt labs
+  - description & motivation
+  - to-do before merge
+  - screenshots
+  - validation of models
+  - changes of existing models
+  - checklist
+
+### Hooks and operations
+
+- Hooks are snippets of SQL that are executed at different times:
+  - `pre-hook`: executed _before_ a model, seed or snapshot is built
+  - `post-hook`: executed _after_ ad model, seed or snapshot is built
+  - `on-run-start`: executed at the _start_ of `dbt build`, `dbt compile`, `dbt docs generate`, `dbt run`, `dbt seed`, `dbt snapshot`,
+    or `dbt test`
+  - `on-run-end`: executed at the _end_ of other commands
+  ```sql
+  {{ config(pre_hook=["{{ some_macro() }}" | <sql_statements>]) }}
+  ```
+  ```bash
+  dbt run-operation {marco_name} --args '{role: reporter}'
+  ```
+
+### Custom schemas
+
+| target schema | custom schema | resulting schema    |
+| ------------- | ------------- | ------------------- |
+| alice_dev     | none          | alice_dev           |
+| alice_dev     | marketing     | alice_dev_marketing |
+
+### Project variables
+
+- defining variables in _dbt_project.yml_
+
+```yml
+name: my_dbt_project
+version: 1.0.0
+config-version: 2
+```
+
 ## dbt Explorer
 
 - project overview
 - project performance
 - project recommendation
+
+## Semantic models
