@@ -992,15 +992,51 @@ dbt run -s dim_customers,version:latest
 | alice_dev     | none          | alice_dev           |
 | alice_dev     | marketing     | alice_dev_marketing |
 
+- if your dbt project has a custom macro called _generate_schema_name_, dbt will use it instead of the default macro.
+- A built-in alternative pattern for generating schema names
+
+  - `target.name == 'prod'`
+
+    | target schema  | custom schema | resulting schema |
+    | -------------- | ------------- | ---------------- |
+    | analytics_prod | none          | analytics_prod   |
+    | analytics_prod | marketing     | marketing        |
+
+  - `target.name != 'prod'`
+
+    | target schema | custom schema | resulting schema |
+    | ------------- | ------------- | ---------------- |
+    | alice_dev     | none          | alice_dev        |
+    | alice_dev     | marketing     | alice_dev        |
+
+  if you want to use this pattern, please create a macro under _/macros/_ named as _generate_schema_name.sql_ with following jinja
+
+  ```jinja
+  {% macro generate_schema_name(custom_schema_name, node) -%}
+    {{ generate_schema_name_for_env(custom_schema_name, node) }}
+  {%- endmacro %}
+  ```
+
 ### Project variables
 
-- defining variables in _dbt_project.yml_
-
-```yml
-name: my_dbt_project
-version: 1.0.0
-config-version: 2
-```
+- to use a variable in a model, hook, or macro, use the {{ var('...') }} function
+- variables can be defined in two ways:
+  - in the _dbt_project.yml_ file
+    ```yml
+    name: my_dbt_project
+    version: 1.0.0
+    config-version: 2
+    vars:
+      start_date: "2016-06-01"
+      my_dbt_project:
+        platforms: ["web", "mobile"]
+      snowplow:
+        app_ids: ["marketing", "app", "landing-page"]
+    ```
+  - on the command line
+    ```bash
+    dbt run --vars '{key: value, date: 20180101}'
+    ```
 
 ## dbt Explorer
 
