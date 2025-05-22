@@ -69,7 +69,7 @@
           columns:
             - name: <column_name1>
               description: <description>
-              data_tests: # now newly named as data_tests
+              tests: # data_tests only supports unique, not_null and accepted_values
                 - unique
                 - not_null
                 - relationships
@@ -84,9 +84,9 @@
 - Models are primarily written as a _select_ statement and saved as a _.sql_ file, which define the transformed data schema.
 - Python models are also supported for training or deploying data science models, complex transformations, or where a specific Python package meets a need.
 - model pipeline
-- Source --> Staging --> Intermediate --> Fact --> Dimension
+- Source --> Staging --> Intermediate --> Fact/Dimension
 
-#### SQL models
+~~#### SQL models~~
 
 #### Python models
 
@@ -357,7 +357,7 @@ pacakges:
   - ephemeral: the `final/model` table will not be created. It used as a `CTE`
   - views: saved query. Starting with _views_
   - tables: if the view query lasts too long, change to _tables_
-  - incremental: keep the old table, and add the new records, working with `unique_key='<id>'` to activate `merge` query. If dbt builds lasts too long, switch to _incremental_
+  - incremental: keep the old table, and add the new records, working with `unique_key='<id>'` to ~~activate `merge` query~~. If dbt builds lasts too long, switch to _incremental_
     - `is_incremental()` checks 4 conditions --> only true, true, true, false
       1. Does this model already exist as an object in the database
       2. Is that database object a table?
@@ -1038,10 +1038,203 @@ dbt run -s dim_customers,version:latest
     dbt run --vars '{key: value, date: 20180101}'
     ```
 
-## dbt Explorer
+## Reference
 
-- project overview
-- project performance
-- project recommendation
+### Project configs
 
-## Semantic models
+- dbt_project.yml
+  - `--project-dir` flag or the `DBT_PROJECT_DIR` to change the default directory for _dbt_project.yml_.
+  - use **relative path**
+  - `analysis-paths: ["relative_path"]`
+  - `asset-paths: ["relative_path"]`: will be compiled as part of `docs generate`
+  - `clean-targets: ["relative_path", "relative_path", ...]`
+  - `config-version: 2`
+  - `dispatch` search the namespace in the given order
+  ```yml
+  dispatch:
+    - macro_namespace: dbt_utils
+      search_order: ["my_root_project", "dbt_utils"]
+  ```
+  - `docs-paths: ["relative_path"]`
+  - `macro-paths: ["relative_path"]`
+  - `name: project_name`: snake_case
+  - `on-run-start` and `on-run-end`
+  - `packages-install-path: relative_path`
+  - `profile: string`: the profile your dbt project should use to connect to your data warehouse
+  - `query-comment`
+  ```yml
+  query-comment:
+    comment: string
+    append: true | false
+    job-label: true | false # BigQuery only
+  ```
+  - `quoting`
+  ```yml
+  quoting:
+    database: true | false
+    schema: true | false
+    identifier: true | false
+  ```
+  - `require-dbt-version: ">=1.0.0,<2.0.0"`: but you can disable version checks - `dbt run --no-version-check`
+  - `snapshot-paths: ["relative_path"]`
+  - `seed-paths: ["relative_path"]`
+  - `model-paths: ["relative_path"]`
+  - `test-paths: ["relative_path"]`
+  - `version: version`: dbt project version vs. `version: 2` in property file refers to dbt version
+- .dbtignore
+
+### Resource configs and properties
+
+```yml
+# apply config to all models
+models:
+  +enabled: false
+# apply config to all models in your project
+name: jaffle_shop
+models:
+  jaffle_shop:
+    +enabled: false
+# apply config to all models in a subdirectory
+name: jaffle_shop
+models:
+  jaffle_shop:
+    staging:
+      +enabled: false
+# apply config to a specific model
+name: jaffle_shop
+models:
+  jaffle_shop:
+    staging:
+      stripe:
+        payments:
+          +enabled: false
+```
+
+#### Configs and properties
+
+- properties describe resources, while configurations control how dbt builds them in the warehouse
+- config priority order: in-file `config()` --> properties in a `.yml` file --> config defined in the project file
+
+#### General properties
+
+- **columns** supports `name, data_type, tags, meta, tests, description, quote`
+- **constraints** only `table, incremental` models support constraints and constrains require the declaration and enforcement of a model `config: contract: {enforced: true}`
+  - `type: not_null|unique|primary_key|foreign_key|check|custom`
+  - `expression`
+  - `columns` (model-level only)
+  - `to` and `to_columns` for **foreign key**
+- **deprecation_date** supports RFC 3339 formats include: `YYYY-MM-DD hh:mm:ss.sss±hh:mm`, `YYYY-MM-DD hh:mm:ss.sss` and `YYYY-MM-DD`
+- **description**
+- **latest_version | version**
+  ```yml
+  version: 2
+  models:
+    - name: <model_name>
+      latest_version: 2
+      versions:
+        - v: 3 # required --> numeric or any string
+          defined_in: <file_name> # default <model_name>_v<v>
+          columns:
+            - include: <include_value>
+              exclude: <exclude_list>
+            - name: <column_name> # additional columns
+        - v: 2
+        - v: 1
+  ```
+- **data_tests | tests**: `not_null, unique, accepted_values, relationships`
+- **docs**
+  ```yml
+  # basic
+  models:
+    - name: my_model
+      docs:
+        show: true | false
+        node_color: purple
+  # mark a model as hidden
+  models:
+    - name: sessions__tmp
+      docs:
+        show: false
+  ```
+
+#### General cofigs: sources, exposures do not support config --> the following configs can be used in top-level
+
+- `access: private | protected (default) | public`: private: same group, protected: same project/package, public: any
+- `alias: <user_firendly_name>`
+- `contracts: enforced: true`: only for SQL models (22.05.2025), supports _view_, _table_, _incremental_ with _on_schema_change: append_new_columns | fail_
+  - if you use contracts and data type, _numeric(38,3)_ should be defined with precision and scale
+- `database: <database_name|project_name>`: save the result into the defined database not in default target database = project within BigQuery
+- `enabled: true | false`: for enabling or disabling a resource
+- `event_time: my_time_field`: is required for the _incremental microbatch_ strategy to understand when an event occurred
+  - for incremental microbatch models, if your upstream models don't have _event_time_ configured, dbt cannot automatically filter them during batch processing and will perform full table scans on every batch run
+  - the timestamp of the event should represent "at what time did the row occur" rather than an event ingestion date
+  - `loaded_at`, `ingested_at` or `last_updated_at` could be used but should take care about duplicates
+- `grants: <(+)privilege>: <grantees|principles>`: `+` add a new grantee to the exsiting privilege
+  - if you delete the entire `+grants` section, dbt assumes you no longer want it to manage grants and doesn't change anything. To have dbt revoke all existing grants from a node, provide an **empty list** of grantees
+  - `grant_access_to`: enables you to set up authorized views. When configured, dbt provides an authorized view access to show partial information from other datasets, without providing end users with full access to those underlying datasets
+  ```yml
+  models:
+    - name: specific_model
+      config:
+        grant_access_to:
+          - project: project_1
+            dataset: dataset_1
+        grants:
+          roles/bigquery.dataViewer: ["user:someone@yourcompany.com"]
+  ```
+- `group: <group_name>`: assign a group to a resource. When a resource is grouped, dbt will allow it to reference private models within the same group
+- `meta: {<dictionary>}`: this metadata is compiled into the `manifest.json` file generated by dbt, and is viewable in the auto-generated documentation
+- `persist_docs: relation: true|false columns: true|false`: allow save relation and columns description
+- `pre-hook|pre_hook, post-hook|post_hook`: use `.render()` method to avoid compilation errors and to explicitly tell dbt to process a specific relation, when using the `--empty` flag
+  ```jinja
+  {{ config(pre_hook=["alter external table {{ source('sys', 'customers').render() }} refresh"]) }}
+  ```
+  - hooks are cumulative
+    - hooks from dependent packages will be run before hooks in the active package
+    - hooks defined within the model itself will be run after hooks defined in _dbt_project.yml_
+    - hooks within a given context will be run in the order in which they are defined
+  - run these hooks outside of transaction by using `before_begin` and `after_commit` or set `transaction: False|false`
+- `schema: <schema_name>`: the relation is then `{{target.schema}}_{{schema_name}}`
+- `tags: [<string>]`
+- `unique_key=[<column_name>]`: only in incremental and snapshots
+- `full_refresh`: allows you to optionally configure whether a resource will always or never perform a full-refresh
+
+##### for models
+
+- `on_configuration_change: apply | continue | fail`
+- `sql_header` vs `pre-hooks`
+
+##### for seeds
+
+- `quote_columns: true|false`
+- `column_types: {column_name: datatype}`: column_name is case-sensitive
+- `delimiter: <string>`
+
+##### for snapshots
+
+## advanced topics
+
+### create new materializations
+
+[custom materializations](https://github.com/dbt-labs/dbt-adapters/tree/60005a0a2bd33b61cb65a591bc1604b1b3fd25d5/dbt/include/global_project/macros/materializations)
+
+```jinja
+{% materialization my_materialization_name, default %}
+ -- cross-adapter materialization... assume Redshift is not supported
+{% endmaterialization %}
+
+
+{% materialization my_materialization_name, adapter='redshift' %}
+-- override the materialization for Redshift
+{% endmaterialization %}
+```
+
+- anatomy of a materialization
+  - prepare the database for the new model
+  - run pre-hooks
+  - execute any sql required to implement the desired materialization
+  - run post-model hooks
+  - clean up the database as required
+  - update the relation cache
+
+### create user-defined functions
