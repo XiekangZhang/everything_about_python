@@ -1212,6 +1212,101 @@ models:
 
 ##### for snapshots
 
+- since dbt core 1.9, define snapshots in a _.sql_ file using a config block is a legacy method.
+
+```yml
+snapshots:
+  - name: orders_snapshot
+    relation: source{} | ref{}
+    config:
+      strategy: timestamp | check
+      updated_at: updated_at # required if you use timestamp strategy
+      check_cols: ["col1", "col2"] # required if you use check strategy
+      unique_key: id
+      pre_hook: <sql_query>
+      post_hook: <sql_query>
+      dbt_valid_to_current: "to_date('9999-12-31')"
+      hard_deletes: "ignore | invalidate | new_record"
+      snapshot_meta_column_names:
+        dbt_valid_from: strat_date
+        dbt_valid_to: end_date
+        dbt_scd_id: string
+        dbt_updated_at: string
+        dbt_is_deleted: string
+```
+
+##### for data tests
+
+- singular test
+  ```sql
+  -- tests/<filename>.sql
+  {{config(store_failures=true)}}
+  ```
+- generic test block
+  ```sql
+  -- macros/<filename>.sql --> in .yml
+  {% test <testname>(model, column_name) %}
+  {{ config(store_failures = false) }}
+  select ...
+  {% endtest %}
+  ```
+
+```yml
+version: 2
+models:
+  - name: my_model
+    columns:
+      - name: my_columns
+        tests:
+          - unique:
+              config:
+                fail_calc: "case when count(*) > 0 then sum(n_records) else 0 end"
+                severity: error
+                error_if: ">1000"
+                warn_if: ">10"
+          - accepted_values:
+              values: ["a", "b", "c"]
+              config:
+                limit: 1000 # will only include the first 1000 failures
+                store_failures: true|false
+                store_failures_as: ephemeral|table|view
+                where: "date_column > __3_days_ago__"
+```
+
+```sql
+-- macros/custom_get_where_subquery.sql --> to create custom where configuration
+{% macro get_where_subquery(relation) -%}
+    {% set where = config.get('where') %}
+    {% if where %}
+        {% if "_days_ago__" in where %}
+            -- {# replace placeholder string with result of custom macro #}
+            {% set where = replace_days_ago(where) %}
+        {% endif %}
+        {%- set filtered -%}
+            (select * from {{ relation }} where {{ where }}) dbt_subquery
+        {%- endset -%}
+        {% do return(filtered) %}
+    {%- else -%}
+        {% do return(relation) %}
+    {%- endif -%}
+{%- endmacro %}
+
+{% macro replace_days_ago(where_string) %}
+    {# Use regex to search the pattern for the number days #}
+    {# Default to 3 days when no number found #}
+    {% set re = modules.re %}
+    {% set days = 3 %}
+    {% set pattern = '__(\d+)_days_ago__' %}
+    {% set match = re.search(pattern, where_string) %}
+    {% if match %}
+        {% set days = match.group(1) | int %}
+    {% endif %}
+    {% set n_days_ago = dbt.dateadd('day', -days, current_timestamp()) %}
+    {% set result = re.sub(pattern, n_days_ago, where_string) %}
+    {{ return(result) }}
+{% endmacro %}
+```
+
 ## advanced topics
 
 ### create new materializations
@@ -1238,3 +1333,7 @@ models:
   - update the relation cache
 
 ### create user-defined functions
+
+### define and use custom snapshot strategy
+
+- `snapshot_<strategy>_strategy`
