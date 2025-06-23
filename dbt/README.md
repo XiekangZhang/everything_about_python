@@ -1261,13 +1261,13 @@ models:
           - unique:
               config:
                 fail_calc: "case when count(*) > 0 then sum(n_records) else 0 end"
-                severity: error
+                severity: error # error --> check error_if then warn_if, warn --> only warn_if
                 error_if: ">1000"
                 warn_if: ">10"
           - accepted_values:
               values: ["a", "b", "c"]
               config:
-                limit: 1000 # will only include the first 1000 failures
+                limit: 1000 # will only include the first 1000 failures --> good idea working with large dataset
                 store_failures: true|false
                 store_failures_as: ephemeral|table|view
                 where: "date_column > __3_days_ago__"
