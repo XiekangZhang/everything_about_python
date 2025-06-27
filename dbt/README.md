@@ -1199,18 +1199,18 @@ models:
 - `unique_key=[<column_name>]`: only in incremental and snapshots
 - `full_refresh`: allows you to optionally configure whether a resource will always or never perform a full-refresh
 
-##### for models
+#### for models
 
 - `on_configuration_change: apply | continue | fail`
 - `sql_header` vs `pre-hooks`
 
-##### for seeds
+#### for seeds
 
 - `quote_columns: true|false`
 - `column_types: {column_name: datatype}`: column_name is case-sensitive
 - `delimiter: <string>`
 
-##### for snapshots
+#### for snapshots
 
 - since dbt core 1.9, define snapshots in a _.sql_ file using a config block is a legacy method.
 
@@ -1235,7 +1235,7 @@ snapshots:
         dbt_is_deleted: string
 ```
 
-##### for data tests
+#### for data tests
 
 - singular test
   ```sql
@@ -1306,6 +1306,89 @@ models:
     {{ return(result) }}
 {% endmacro %}
 ```
+
+#### for unit tests
+
+- unite tests validate your SQL modeling logic on a small set of static inputs before you materialize your full model in production. They support a test-driven development approach, improving both the efficiency of developers and reliability of code.
+- to run only your unit tests, use the command: `dbt test --select test_type:unit`
+- unit tests must be defined in a YML file in your _models/_ directory
+- if you want to unit test a model that depends on an ephemeral model, you must use `format: sql` for that input
+  ```yml
+  unit_tests:
+    - name: test_is_valid_email_address
+      model: dim_customers
+      versions:
+        include:
+          - 2
+        exclude:
+          - 1
+      overrides:
+        is_incremental: false # unit test this model in "full refresh" mode
+        dbt_utils.star: col_a, col_b, col_c
+      given:
+        - input: ref('stg_customers')
+          fromat: dict # default --> sql | csv
+          rows:
+            - { email: bbb@test.com, email_top_level_domain: test.com }
+        - input: ref('top_level_email_domains')
+          format: sql
+          rows: |
+            select 'test.com' as tld union all
+            select 'gmail.com' as tld
+      expect:
+        format: sql
+        fixture: valid_email_address_fixture_output # tests/fixtures
+        # or
+        rows:
+          - { email: bbb@test.com, is_valid_email_address: true }
+          - { email: bbb@xxx.com, is_valid_email_address: false }
+  ```
+
+#### for sources
+
+- disable all sources imported from a package
+  ```yml
+  # dbt_project.yml
+  sources:
+    events:
+      +enabled: false
+  ```
+- conditionally enable a single source
+  ```yml
+  # sources.yml
+  version: 2
+  sources:
+    - name: my_source
+      config:
+        freshness:
+          warn_after:
+            count: <positive_integer>
+            period: minute | hour | day
+          error_after:
+            count: <positive_integer>
+            period: minute | hour | day
+          filter: datediff('day', _etl_loaded_at, current_timestamp) < 2
+      loaded_at_field: <column_name_or_expression> # completed_date::timestamp | CAST(completed_date AS TIMESTAMP)
+      loaded_at_query: <sql_expression> # not be used if loaded_at_field is defined
+      tables:
+        - name: my_source_table
+          identifier: <table_identifier> # the table name as stored in the database. By default, dbt will use the table's name parameter as the identifier
+          config:
+            event_time: my_time_field
+            enabled: "{{ var('my_source_table_enabled', false) }}"
+        - name: <table_name>
+          external:
+            location: <string>
+            file_format: <string>
+            row_format: <string>
+            tbl_properties: <string>
+            partitions:
+              - name: <column_name>
+                data_type: <string>
+                description: <string>
+                config:
+                  meta: { dictionary }
+  ```
 
 ## advanced topics
 
