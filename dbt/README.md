@@ -1393,6 +1393,16 @@ models:
 ## advanced topics
 
 ### create new materializations
+```macro
+{% materialization [materialization name], ["specified adapter" | default] %}
+  1. prepare the database for the new model
+  2. run pre-hooks
+  3. execute any SQL required to implement the desired materialization
+  4. run post-hooks
+  5. clean up the database as required
+  6. update the relation cache
+{% endmaterialization %}
+```
 
 [custom materializations](https://github.com/dbt-labs/dbt-adapters/tree/60005a0a2bd33b61cb65a591bc1604b1b3fd25d5/dbt/include/global_project/macros/materializations)
 
