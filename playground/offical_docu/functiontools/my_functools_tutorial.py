@@ -5,10 +5,12 @@ from functools import (
     lru_cache,
     total_ordering,
     partial,
+    partialmethod,
 )
 import locale
 import statistics
 import time
+
 
 # ! the cache is threadsafe so that the wrapped function can be used in multiple threads. This means that the underlying data structure will remain coherent during concurrent updates.
 @cache
@@ -58,6 +60,22 @@ def power(base, exponent):
     return base**exponent
 
 
+# ! partialmethod: same to partial but for a method of a class. It is better to use with __get__ together.
+class Cell:
+    def __init__(self):
+        self._alive = False
+
+    @property
+    def alive(self):
+        return self._alive
+
+    def set_state(self, state):
+        self._alive = bool(state)
+
+    set_alive = partialmethod(set_state, True)
+    set_dead = partialmethod(set_state, False)
+
+
 if __name__ == "__main__":
     my_list = {"b": 12, "a": 1, "c": 3}
     # ! transform an old-style comparison function to a key_function
@@ -72,6 +90,10 @@ if __name__ == "__main__":
     print(fib.cache_info())
     print(f"Second call duration: {time.time() - start_time:.4f} seconds")
 
-
     square = partial(power, exponent=2)
     print(square(5))  # Output: 25
+
+    c = Cell()
+    print(c.alive)
+    c.set_alive()
+    print(c.alive)
