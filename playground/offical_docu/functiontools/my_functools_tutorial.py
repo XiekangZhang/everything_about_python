@@ -1,7 +1,14 @@
-from functools import cache, cached_property, cmp_to_key, lru_cache, total_ordering, partial
+from functools import (
+    cache,
+    cached_property,
+    cmp_to_key,
+    lru_cache,
+    total_ordering,
+    partial,
+)
 import locale
 import statistics
-
+import time
 
 # ! the cache is threadsafe so that the wrapped function can be used in multiple threads. This means that the underlying data structure will remain coherent during concurrent updates.
 @cache
@@ -46,10 +53,25 @@ class Student:
         pass
 
 
+# ! partial creates a new function with partial application of the given arguments and keywords
+def power(base, exponent):
+    return base**exponent
+
+
 if __name__ == "__main__":
     my_list = {"b": 12, "a": 1, "c": 3}
     # ! transform an old-style comparison function to a key_function
     print(sorted(my_list, key=cmp_to_key(locale.strcoll)))
 
+    start_time = time.time()
     print([fib(n) for n in range(16)])
     print(fib.cache_info())
+    print(f"First call duration: {time.time() - start_time:.4f} seconds")
+    start_time = time.time()
+    print([fib(n) for n in range(16)])
+    print(fib.cache_info())
+    print(f"Second call duration: {time.time() - start_time:.4f} seconds")
+
+
+    square = partial(power, exponent=2)
+    print(square(5))  # Output: 25
