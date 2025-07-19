@@ -49,13 +49,38 @@ A system can be _concurrent_ without being _parallel_ (e.g., a single-core CPU r
   - code generation from Schemas
   - metaclasses
 - TODOS:
-  - - [X]: Master the Basics: Functions as First-Class Objects
-  - - [ ]: Learn Introspection with Built-in functions
-  - - [ ]: Implement Decorators
-  - - [ ]: Understand Dynamic Class Creation with `type()`
-  - - [ ]: Dive into Metaclasses: A metaclass defines the rules for creating a class. Understanding them helps you see how `__build_class__` and `type()` work together.
-      - key methods to learn: `__new__` and `__init__` on the metaclass, and `__prepare__`
-  - - [ ]: descriptors are objects that control attribute access, like `@property`, `staticmethod`, `classmethod`, `__get__`, `__set__`, `__delete__`
+
+  - Level 1: The Foundations
+
+    <input type="checkbox"> Solid Python Fundamentals: [official documentation](https://docs.python.org/3/tutorial/index.html) & [classes](https://docs.python.org/3/tutorial/classes.html)
+
+    <input type="checkbox"> First-Class Functions: [Data Model](https://docs.python.org/3/reference/datamodel.html)
+
+    <input type="checkbox"> Closures: A closure is a function that remembers variables from its enclosing scope. [Closure](https://docs.python.org/3/glossary.html#term-closure) & [Naming and Binding](https://docs.python.org/3/reference/executionmodel.html#naming-and-binding)
+
+  - Level 2: The Building Blocks - Decorators & Descriptors
+
+    <input type='checkbox'> Decorators: [defining functions](https://docs.python.org/3/tutorial/controlflow.html#defining-functions) & [function definition](https://docs.python.org/3/reference/compound_stmts.html#function-definitions) & [decorators](https://docs.python.org/3/glossary.html#term-decorator) & [functools](https://docs.python.org/3/library/functools.html) & [call](https://docs.python.org/3/reference/datamodel.html#object.__call__)
+
+    <input type='checkbox'> Descriptors: [descriptor](https://docs.python.org/3/howto/descriptor.html) & [implementing descriptors](https://docs.python.org/3/reference/datamodel.html#implementing-descriptors) & [property()](https://docs.python.org/3/library/functions.html#propert)
+
+  - Level 3: The Deep Magic - Metaclasses
+
+    <input type='checkbox'> [metaclasses](https://docs.python.org/3/reference/datamodel.html#metaclasses)
+
+    <input type='checkbox'> [type()](https://docs.python.org/3/library/functions.html#type)
+
+    <input type='checkbox'> [\_\_new\_\_, \_\_init\_\_, \_\_prepare\_\_](https://docs.python.org/3/reference/datamodel.html#customizing-class-creation)
+
+  - Level 4: Practical Application & The Why
+
+    <input type='checkbox'> [Django ORM](https://docs.djangoproject.com/en/5.2/topics/db/models/) & [SQLAIchemy](https://docs.sqlalchemy.org/en/20/orm/declarative_mapping.html) & [Pydantic](https://docs.pydantic.dev/latest/concepts/models/)
+
+    <input type='checkbox'> [ABCMeta](https://docs.python.org/3/library/abc.html)
+
+  - Level 5: Best Practices & When to Stop
+
+    <input type='checkbox'> [The Zen of Python](https://peps.python.org/pep-0020/)
 
 ### Monkey patching
 
