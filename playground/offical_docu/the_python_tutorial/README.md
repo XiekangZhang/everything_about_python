@@ -14,3 +14,31 @@
 - str.swapcase()
 - str.ljust(), str.rjust(), str.center()
 - f'{a= !a|!r|!s|:.6f}': ascii(), repr(), str() and last 6 digits
+
+### More Control Flow Tools
+
+- **else** Clases on Loops
+- **match** ... **case**
+- in function you can use '/' or '\_' to define what kind of parameter will be used. `def f(pos1, pos2, /, pos_or_kwd, *, kwd1, kwd2)`
+- arbitrary argument: `def f(*args, **kwargs)`
+- function annotations are completely optional metadata information about the types used by user-defined functions
+
+### Data Structures
+
+### Modules
+
+### Input and Output
+
+### Errors and Exceptions
+
+### Classes
+
+### Brief Tour of the Standard Libraray
+
+### Brief Tour of the Standard Library - Part II
+
+### Virtual Environments and Packages
+
+### Interactive Input Edition and History Substitution
+
+### Floating-Point Arithmetic: Issues and Limitations

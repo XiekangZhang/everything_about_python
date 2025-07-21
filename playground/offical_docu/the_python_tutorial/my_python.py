@@ -1,3 +1,33 @@
+def my_func1():
+    for n in range(2, 10):
+        for x in range(2, n):
+            if n % x == 0:
+                print(n, "equals", x, "*", n / x)
+                break
+        else:
+            print(n, "is a prime number")
+
+
+def http_error(status):
+    match status:
+        case 400:
+            return "Bad request"
+        case 401 | 403 | 404:
+            return "Not allowed"
+        case 404:
+            return "Not found"
+        case 418:
+            return "I'm a teepot"
+        case _:
+            return "Something's wrong with the internet"
+
+
+def f(ham: str, eggs: str = "eggs") -> str:
+    print(f"{ f.__annotations__  = } ")
+    print(f"{ham = }, {eggs = }")
+    return ham + " and " + eggs
+
+
 if __name__ == "__main__":
     print(r"C:\some\name", "C:\some\name", sep="||")
 
@@ -17,3 +47,10 @@ if __name__ == "__main__":
         "%(language)s has %(number)03d quote types."
         % {"language": "Python", "number": 2}
     )
+
+    # else in for
+    my_func1()
+
+    print(http_error(400))
+
+    f("spam")
