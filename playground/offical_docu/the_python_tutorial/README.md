@@ -25,6 +25,22 @@
 
 ### Data Structures
 
+#### List (Tuple, Sets)
+
+- list.clear(), list.index(x[, start[, end]]), list.count(x)
+- list as stacks (last-in, first-out) --> append() with pop()
+- seta - setb, seta | setb, seta & setb, seta ^ setb
+
+#### Looping Techniques
+
+- dict.items()
+- for index, v in enumerate(list)
+- for a, b in zip(lista, listb)
+
+#### from collections import deque
+
+- queues (first-in, first-out) --> append() with popleft()
+
 ### Modules
 
 ### Input and Output

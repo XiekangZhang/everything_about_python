@@ -28,6 +28,10 @@ def f(ham: str, eggs: str = "eggs") -> str:
     return ham + " and " + eggs
 
 
+def matrix_transpose(matrix):
+    return list(zip(*matrix))
+
+
 if __name__ == "__main__":
     print(r"C:\some\name", "C:\some\name", sep="||")
 
@@ -54,3 +58,6 @@ if __name__ == "__main__":
     print(http_error(400))
 
     f("spam")
+
+    matrix = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
+    print(matrix_transpose(matrix))
