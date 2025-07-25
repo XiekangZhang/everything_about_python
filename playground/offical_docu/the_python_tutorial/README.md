@@ -43,7 +43,33 @@
 
 ### Modules
 
+- you can use the `-O` or `-OO` switches on the Python command to reduce the size of a compiled module.
+- `dir(<func>)` is used to find out which names a module defines.
+- importing \* from a package
+
+  ```python
+  # __init__.py
+  __all__ = ['echo', 'surround', 'reverse', 'something_new'] # import the three named submodules
+
+  def something_new():
+    pass
+  ```
+
+#### The Module Search Path
+
+- sys.builtin_module_names
+- sys.path
+  - the directory containing the input script
+  - _PYTHONPATH_
+  - _site-packages_ within _site_ module
+
 ### Input and Output
+
+```python
+import json
+x = [1, 'simple', 'list']
+json.dumps(x)
+```
 
 ### Errors and Exceptions
 
