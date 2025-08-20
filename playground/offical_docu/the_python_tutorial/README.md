@@ -88,6 +88,8 @@ json.dumps(x)
 
 ### Errors and Exceptions
 
+- `error.add_note(...)` to add additional information to defined exception
+
 ### Classes
 
 ### Brief Tour of the Standard Libraray
