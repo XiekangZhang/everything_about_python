@@ -12,20 +12,24 @@
 
 ### More Control Flow Tools
 
-- **else** Clauses on Loops: In a `for` loop, the `else` clause is executed after the loop finishes its final iteration, that is, if no break occurred. 
+- **else** Clauses on Loops: In a `for` loop, the `else` clause is executed after the loop finishes its final iteration, that is, if no break occurred.
 - **match** ... **case**
-- the default value in a function is evaluated only once. If you define it as a mutable object, it will be e.g., appended. 
-- in function you can use '/' or '*' to define what kind of parameter will be used. `def f(pos1, pos2, /, pos_or_kwd, *, kwd1, kwd2)`
+- the default value in a function is evaluated only once. If you define it as a mutable object, it will be e.g., appended.
+- in function you can use '/' or '_' to define what kind of parameter will be used. `def f(pos1, pos2, /, pos_or_kwd, _, kwd1, kwd2)`
 - arbitrary argument: `def f(*args, **kwargs)`
 - function `__annotations__` are completely optional metadata information about the types used by user-defined functions
 
 ### Data Structures
 
-#### List (Tuple, Sets)
+#### List (Tuple - immutable, Sets - no duplicate elements)
 
 - list.clear(), list.index(x[, start[, end]]), list.count(x)
 - list as stacks (last-in, first-out) --> append() with pop()
-- seta - setb, seta | setb, seta & setb, seta ^ setb
+- set can be defined and initialized with `{1, 2, 3, 4}` or `set(...)`
+- seta - setb: elements in a but not in b
+- seta | setb: elements in a or in b or both
+- seta & setb: elements in both a and b
+- seta ^ setb: elements in a or in b but not both
 
 #### Looping Techniques
 
@@ -35,17 +39,20 @@
 
 #### from collections import deque
 
-- queues (first-in, first-out) --> append() with popleft()
+- queues (first-in, first-out) --> `deque` append() with popleft()
+
+#### comparing sequences and other types
+
+- The comparison uses lexicographical ordering: first the first two items are compared, and if they differ this determines the outcome of the comparison; if they are equal, the next two items are compared, and so on, until either sequence is exhausted
 
 ### Modules
 
 - you can use the `-O` or `-OO` switches on the Python command to reduce the size of a compiled module.
 - `dir(<func>)` is used to find out which names a module defines.
-- importing \* from a package
 
   ```python
-  # __init__.py
-  __all__ = ['echo', 'surround', 'reverse', 'something_new'] # import the three named submodules
+  # __init__.py: treat directories containing the file as packages
+  __all__ = ['echo', 'surround', 'reverse', 'something_new'] # import the three named submodules, if from sound.effects import * is used.
 
   def something_new():
     pass
@@ -60,6 +67,18 @@
   - _site-packages_ within _site_ module
 
 ### Input and Output
+
+- `print(f"something{...!a|!s|!r}")`: `!a`: `ascii()`, `!s`: `str()`, `!r`: `repr()`
+- the `=` specifier can be used to expand an expression to the text of the expression, an equal sign, then the representation of the evaluated expression
+
+```python
+bugs = 'roaches'
+count = 13
+area = 'living room'
+print(f"Debugging {bugs=} {count=} {area=}")
+```
+
+- `str.rjust()`, `str.ljust()`, `str.center()`, and `str.zfill()`
 
 ```python
 import json

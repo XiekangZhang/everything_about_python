@@ -99,6 +99,20 @@ if __name__ == "__main__":
     matrix = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]
     print(matrix_transpose(matrix))
 
+    # Formatted String Literals
+    import math
+
+    print(f"The value of pi is approximately {math.pi:.3f}")
+    animals = "eels"
+    print(f"My hovercraft is full of {animals}.")
+    print(f"My hovercraft is full of {animals!a}.")
+    print(f"My hovercraft is full of {animals!s}.")
+    print(f"My hovercraft is full of {animals!r}.")
+
+    table = {k: str(v) for k, v in vars().items()}
+    message = " ".join([f"{k}: " + "{" + k + "};" for k in table.keys()])
+    print(message.format(**table))
+
     import json
 
     x = [1, "simple", "list"]
