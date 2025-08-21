@@ -1,5 +1,21 @@
 # official python tutorial documentation
 
+## Table of contents
+
+- [An Informal Introduction to Python](#an-informal-introduction-to-python)
+- [More Control Flow Tools](#more-control-flow-tools)
+- [Data Structures](#data-structures)
+  - [List, Tuple, Sets](#list-tuple---immutable-sets---no-duplicate-elements)
+  - [Looping Techniques](#looping-techniques)
+  - [queues](#from-collections-import-deque)
+  - [Comparing sequences and other types](#comparing-sequences-and-other-types)
+- [Modules](#modules)
+- [Error and Exceptions](#errors-and-exceptions)
+- [Classes](#classes)
+  - [Scopes and Namespace](#scopes-and-namespaces)
+  - [Dataclasses](#dataclasses)
+  - [Iterators](#iterators)
+
 ## Python 3.13.x
 
 ### An Informal Introduction to Python
@@ -92,6 +108,21 @@ json.dumps(x)
 - `try...except...else...finally...` `else` will be run if no error exists and `finally` always run
 
 ### Classes
+
+#### Scopes and Namespaces
+
+- a namespace is a dictionary mapping names to objects
+  - Python creates several namespaces as a program runs:
+    - built-in > global (module) > local (function / class)
+- a scope is the set of rules for finding which dictionary to look in
+  - search order (LEGB: local --> enclosing --> gobal --> built-in)
+
+#### dataclasses
+
+- use `@dataclass` to define a structure like _struct_ in C or java bean
+
+#### iterators
+
 
 ### Brief Tour of the Standard Libraray
 
