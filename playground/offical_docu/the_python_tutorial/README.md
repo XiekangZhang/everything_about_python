@@ -89,6 +89,7 @@ json.dumps(x)
 ### Errors and Exceptions
 
 - `error.add_note(...)` to add additional information to defined exception
+- `try...except...else...finally...` `else` will be run if no error exists and `finally` always run
 
 ### Classes
 

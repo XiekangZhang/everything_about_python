@@ -1,4 +1,132 @@
-# everything_about_python
+## markdown
+
+### picture
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/25423296/163456776-7f95b81a-f1ed-45f7-b7ab-8fa810d529fa.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png">
+  <img alt="Shows an illustrated sun in light mode and a moon with stars in dark mode." src="https://user-images.githubusercontent.com/25423296/163456779-a8556205-d0a5-45e2-ac17-42d089e3c3f8.png">
+</picture>
+
+### collapsed section
+
+<details open>
+<summary>my test</summary>
+
+| Rank | THING-TO-RANK |
+| ---: | ------------- |
+|    1 | JAVA          |
+|    2 | NextJS        |
+|    3 | Python        |
+
+</details>
+
+<details>
+<summary>my test</summary>
+
+| Rank | THING-TO-RANK |
+| ---: | ------------- |
+|    1 | JAVA          |
+|    2 | NextJS        |
+|    3 | Python        |
+
+</details>
+
+#### subtitle
+
+### quote
+
+---
+
+> If we pull together and commit ourselves, then we can push through anything.
+
+— Mona the Octocat
+
+### syntax
+
+| style         |    syntax     |                              examples |
+| :------------ | :-----------: | ------------------------------------: |
+| bold          |   \_\_ \_\_   |                              **bold** |
+| italic        |     \_ \_     |                              _italic_ |
+| strikethrough |   \~\~ \~\~   |                     ~~strikethrough~~ |
+| subscript     | \<sub>\</sub> |   This is a <sub>subscript</sub> text |
+| superscript   | \<sup>\</sup> | This is a <sup>superscript</sup> text |
+| underline     | \<ins>\</ins> |                  <ins>underline</ins> |
+
+The background color is `rgb(9, 105, 218)` for light mode and `rgb(9, 105, 218)` for dark mode.
+
+### links
+
+[google](www.google.de)
+
+- [Link Text](#collapsed-section)
+  - [sub title](#subtitle)
+  - my test
+
+### images
+
+![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://myoctocat.com/assets/images/base-octocat.svg)
+
+### task lists
+
+<input type="checkbox">
+
+### emoji
+
+:mask:
+[emoji](https://github.com/ikatyang/emoji-cheat-sheet/blob/github-actions-auto-update/README.md)
+
+### footnotes (only in git)
+
+Here is a simple footnote[^1].
+
+A footnote can also have multiple lines[^2].
+
+[^1]: My reference.
+[^2]:
+    To add line breaks within a footnote, prefix new lines with 2 spaces.
+    This is a second line.
+
+### alerts (only in git)
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
+
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
+
+### diagrams
+
+#### mermaid
+
+```mermaid
+graph TD;
+  A-->B;
+  A-->C;
+  B-->D;
+  C-->D;
+```
+
+### math
+This sentence uses `$` delimiters to show math inline: $\sqrt{3x-1}+(1+x)^2$
+
+$$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)$$
+
+```math
+\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
+```
+
+
+## everything_about_python
 
 pip list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip install -U
 
