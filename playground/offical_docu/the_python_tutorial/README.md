@@ -123,6 +123,7 @@ json.dumps(x)
 
 #### iterators
 
+- to implement your own iterators, you have to develop `__iter__()` and `__next__()` function
 
 ### Brief Tour of the Standard Libraray
 
