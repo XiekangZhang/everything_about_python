@@ -182,10 +182,12 @@ A system can be _concurrent_ without being _parallel_ (e.g., a single-core CPU r
 
     <input type="checkbox" checked> Solid Python Fundamentals: [official documentation](https://docs.python.org/3/tutorial/index.html) & [classes](https://docs.python.org/3/tutorial/classes.html)
 
-    <input type="checkbox"> First-Class Functions: [Data Model](https://docs.python.org/3/reference/datamodel.html)
+    <input type="checkbox"> First-Class Functions: [Data Model](https://docs.python.org/3/reference/datamodel.html) (master python functions)
 
     <input type="checkbox"> Closures: A closure is a function that remembers variables from its enclosing scope. [Closure](https://docs.python.org/3/glossary.html#term-closure) & [Naming and Binding](https://docs.python.org/3/reference/executionmodel.html#naming-and-binding)
 
+    - [ ] type introspection (type(), isinstance(), issubclass(), hasattr(), getattr(), and dir())
+    - [ ] dynamic attribute access (getattr(), setattr(), delattr())
     - [ ] poetry
 
   - Level 2: The Building Blocks - Decorators & Descriptors
