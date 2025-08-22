@@ -117,6 +117,7 @@ graph TD;
 ```
 
 ### math
+
 This sentence uses `$` delimiters to show math inline: $\sqrt{3x-1}+(1+x)^2$
 
 $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)$$
@@ -124,7 +125,6 @@ $$\left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \
 ```math
 \left( \sum_{k=1}^n a_k b_k \right)^2 \leq \left( \sum_{k=1}^n a_k^2 \right) \left( \sum_{k=1}^n b_k^2 \right)
 ```
-
 
 ## everything_about_python
 
@@ -180,11 +180,13 @@ A system can be _concurrent_ without being _parallel_ (e.g., a single-core CPU r
 
   - Level 1: The Foundations
 
-    <input type="checkbox"> Solid Python Fundamentals: [official documentation](https://docs.python.org/3/tutorial/index.html) & [classes](https://docs.python.org/3/tutorial/classes.html)
+    <input type="checkbox" checked> Solid Python Fundamentals: [official documentation](https://docs.python.org/3/tutorial/index.html) & [classes](https://docs.python.org/3/tutorial/classes.html)
 
     <input type="checkbox"> First-Class Functions: [Data Model](https://docs.python.org/3/reference/datamodel.html)
 
     <input type="checkbox"> Closures: A closure is a function that remembers variables from its enclosing scope. [Closure](https://docs.python.org/3/glossary.html#term-closure) & [Naming and Binding](https://docs.python.org/3/reference/executionmodel.html#naming-and-binding)
+
+    - [ ] poetry
 
   - Level 2: The Building Blocks - Decorators & Descriptors
 

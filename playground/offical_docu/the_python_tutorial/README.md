@@ -15,6 +15,9 @@
   - [Scopes and Namespace](#scopes-and-namespaces)
   - [Dataclasses](#dataclasses)
   - [Iterators](#iterators)
+- [The Python Standard Library](#the-python-standard-library)
+  - [built-in functions](#built-in-functions)
+  - [built-in types](#built-in-types)
 
 ## Python 3.13.x
 
@@ -114,6 +117,7 @@ json.dumps(x)
 - a namespace is a dictionary mapping names to objects
   - Python creates several namespaces as a program runs:
     - built-in > global (module) > local (function / class)
+  - `globals()` and `locals()` return the current global and local namespace respectively
 - a scope is the set of rules for finding which dictionary to look in
   - search order (LEGB: local --> enclosing --> gobal --> built-in)
 
@@ -125,17 +129,32 @@ json.dumps(x)
 
 - to implement your own iterators, you have to develop `__iter__()` and `__next__()` function
 
-### Brief Tour of the Standard Libraray
+## The Python Standard Library
 
-### Brief Tour of the Standard Library - Part II
+### Built-in Functions
 
-### Virtual Environments and Packages
+- a `@classmethod` is a decorator in Python that defines a method bound to the class, not the instance of the class.
+  - 1st argument: `cls`
+  - primary use case: factory methods that create instances
+- a `@staticmethod` is a decorator in Python that defines a method unbound to the class nor the instance of the class.
+  - no needing of `cls` nor `self`
+  - primary use case: utility functions that are related to the class
+- `open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None)`
 
-### Interactive Input Edition and History Substitution
+  | mode | meaning                                                         |
+  | :--- | :-------------------------------------------------------------- |
+  | 'r'  | open for reading                                                |
+  | 'w'  | open for writing, truncating the file first                     |
+  | 'x'  | open for exclusive creation, failing if the file already exists |
+  | 'a'  | open for writing, appending to the end of file if it exists     |
+  | 'b'  | binary mode                                                     |
+  | 't'  | text mode                                                       |
+  | '+'  | open for updating (reading and writing)                         |
 
-### Floating-Point Arithmetic: Issues and Limitations
+- `@property` (getter) + `@<property>.setter` + `@<property>.deleter`: similar to java private parameter + public getter and setter
+- `__import__(<module_name>)` and `importlib.import_module(<module_name>)` can be used for dynamic imports & metaprogramming
 
-## built-in
+### Built-in Types
 
 #### Text Sequence Type - str (complete it later)
 
