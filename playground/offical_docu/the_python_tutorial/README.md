@@ -17,7 +17,14 @@
   - [Iterators](#iterators)
 - [The Python Standard Library](#the-python-standard-library)
   - [built-in functions](#built-in-functions)
+    - [classmethod, staticmethod](#classmethod-staticmethod)
+    - [mode variants within open](#mode-variants-within-open)
+    - [property setter deleter](#property-setter-deleter)
+    - [dynamic import](#dynamic-import)
   - [built-in types](#built-in-types)
+    - [truth value testing](#truth-value-testing)
+    - [boolean operations](#boolean-operations)
+    - [sequence types - list, tuple, range](#sequence-types---list-tuple-range)
 
 ## Python 3.13.x
 
@@ -133,12 +140,17 @@ json.dumps(x)
 
 ### Built-in Functions
 
+#### classmethod, staticmethod
+
 - a `@classmethod` is a decorator in Python that defines a method bound to the class, not the instance of the class.
   - 1st argument: `cls`
   - primary use case: factory methods that create instances
 - a `@staticmethod` is a decorator in Python that defines a method unbound to the class nor the instance of the class.
   - no needing of `cls` nor `self`
   - primary use case: utility functions that are related to the class
+
+#### mode variants within open
+
 - `open(file, mode='r', buffering=-1, encoding=None, errors=None, newline=None, closefd=True, opener=None)`
 
   | mode | meaning                                                         |
@@ -151,10 +163,29 @@ json.dumps(x)
   | 't'  | text mode                                                       |
   | '+'  | open for updating (reading and writing)                         |
 
+#### property, setter, deleter
+
 - `@property` (getter) + `@<property>.setter` + `@<property>.deleter`: similar to java private parameter + public getter and setter
+
+#### dynamic import
+
 - `__import__(<module_name>)` and `importlib.import_module(<module_name>)` can be used for dynamic imports & metaprogramming
 
 ### Built-in Types
+
+#### truth value testing
+
+- the built-in objects are considered false:
+  - constants defined to be false: `None` and `False`
+  - zero of any numeric type: `0`, `0.0`, `0j`, `Decimal(0)`, `Fraction(0, 1)`
+  - empty sequences and collections: `''`, `()`, `{}`, `set()`, `range(0)`
+
+#### boolean operations
+
+- `and`, `or` are short-circuit operator
+- `not` has a lower priority than non-Boolean operators, so `not a == b` is interpreted as `not (a == b)`
+
+#### sequence types - list, tuple, range
 
 #### Text Sequence Type - str (complete it later)
 
