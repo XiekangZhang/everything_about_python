@@ -39,6 +39,7 @@ Table of contents:
         - [bytes - same operations with str](#bytes---same-operations-with-str)
         - [bytearray - same operations with str](#bytearray---same-operations-with-str)
         - [memory views](#memory-views)
+      - [set types - set, fronzenset](#set-types---set-fronzenset)
 
 <!-- /code_chunk_output -->
 
@@ -254,3 +255,13 @@ json.dumps(x)
 - `bytearray(b'Hi!')`, `bytearray.fromhex('...')`, `bytearray(b'string').hex()`
 
 ##### memory views
+
+- memory views in Python are objects that allow you to access the internal data of an object without creating a copy
+- they are a way to expose the buffer protocol in a Python object, which provides a direct, low-level interface for reading and writing data in memory
+- this is particularly useful for working with large data sets, as it saves on memory usage and improves performance
+- python types supported buffer protocol are
+  - bytes, bytearray
+  - array, NumPy arrays, Pillow images
+- `class memoryview(object)`, `tobytes(order='C')`, `hex(sep, bytes_per_sep=1)`, `tolist()`, `toreadyonlgy()`, `release()`, `cast(format, shape + /)`
+
+#### set types - set, fronzenset
