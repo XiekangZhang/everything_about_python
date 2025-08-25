@@ -1,30 +1,48 @@
+Table of contents:
+
+<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
+
+<!-- code_chunk_output -->
+
+- [official python tutorial documentation](#official-python-tutorial-documentation)
+  - [Python 3.13.x](#python-313x)
+    - [An Informal Introduction to Python](#an-informal-introduction-to-python)
+    - [More Control Flow Tools](#more-control-flow-tools)
+    - [Data Structures](#data-structures)
+      - [List (Tuple - immutable, Sets - no duplicate elements)](#list-tuple---immutable-sets---no-duplicate-elements)
+      - [Looping Techniques](#looping-techniques)
+      - [from collections import deque](#from-collections-import-deque)
+      - [comparing sequences and other types](#comparing-sequences-and-other-types)
+    - [Modules](#modules)
+      - [The Module Search Path](#the-module-search-path)
+    - [Input and Output](#input-and-output)
+    - [Errors and Exceptions](#errors-and-exceptions)
+    - [Classes](#classes)
+      - [Scopes and Namespaces](#scopes-and-namespaces)
+      - [dataclasses](#dataclasses)
+      - [iterators](#iterators)
+  - [The Python Standard Library](#the-python-standard-library)
+    - [Built-in Functions](#built-in-functions)
+      - [classmethod, staticmethod](#classmethod-staticmethod)
+      - [mode variants within open](#mode-variants-within-open)
+      - [property, setter, deleter](#property-setter-deleter)
+      - [dynamic import](#dynamic-import)
+    - [Built-in Types](#built-in-types)
+      - [truth value testing](#truth-value-testing)
+      - [boolean operations](#boolean-operations)
+      - [sequence types - list, tuple, range](#sequence-types---list-tuple-range)
+        - [list](#list)
+        - [range](#range)
+      - [string methods](#string-methods)
+        - [printf-style String Formatting](#printf-style-string-formatting)
+      - [binary sequence types - bytes, bytearray, memoryview](#binary-sequence-types---bytes-bytearray-memoryview)
+        - [bytes - same operations with str](#bytes---same-operations-with-str)
+        - [bytearray - same operations with str](#bytearray---same-operations-with-str)
+        - [memory views](#memory-views)
+
+<!-- /code_chunk_output -->
+
 # official python tutorial documentation
-
-## Table of contents
-
-- [An Informal Introduction to Python](#an-informal-introduction-to-python)
-- [More Control Flow Tools](#more-control-flow-tools)
-- [Data Structures](#data-structures)
-  - [List, Tuple, Sets](#list-tuple---immutable-sets---no-duplicate-elements)
-  - [Looping Techniques](#looping-techniques)
-  - [queues](#from-collections-import-deque)
-  - [Comparing sequences and other types](#comparing-sequences-and-other-types)
-- [Modules](#modules)
-- [Error and Exceptions](#errors-and-exceptions)
-- [Classes](#classes)
-  - [Scopes and Namespace](#scopes-and-namespaces)
-  - [Dataclasses](#dataclasses)
-  - [Iterators](#iterators)
-- [The Python Standard Library](#the-python-standard-library)
-  - [built-in functions](#built-in-functions)
-    - [classmethod, staticmethod](#classmethod-staticmethod)
-    - [mode variants within open](#mode-variants-within-open)
-    - [property setter deleter](#property-setter-deleter)
-    - [dynamic import](#dynamic-import)
-  - [built-in types](#built-in-types)
-    - [truth value testing](#truth-value-testing)
-    - [boolean operations](#boolean-operations)
-    - [sequence types - list, tuple, range](#sequence-types---list-tuple-range)
 
 ## Python 3.13.x
 
@@ -49,19 +67,19 @@
 
 #### List (Tuple - immutable, Sets - no duplicate elements)
 
-- list.clear(), list.index(x[, start[, end]]), list.count(x)
+- `list.clear()`, `list.index(x[, start[, end]])`, `list.count(x)`
 - list as stacks (last-in, first-out) --> append() with pop()
 - set can be defined and initialized with `{1, 2, 3, 4}` or `set(...)`
-- seta - setb: elements in a but not in b
-- seta | setb: elements in a or in b or both
-- seta & setb: elements in both a and b
-- seta ^ setb: elements in a or in b but not both
+- seta `-` setb: elements in a but not in b
+- seta `|` setb: elements in a or in b or both
+- seta `&` setb: elements in both a and b
+- seta `^` setb: elements in a or in b but not both
 
 #### Looping Techniques
 
-- dict.items()
-- for index, v in enumerate(list)
-- for a, b in zip(lista, listb)
+- `dict.items()`
+- `for index, v in enumerate(list)`
+- `for a, b in zip(lista, listb)`
 
 #### from collections import deque
 
@@ -175,7 +193,7 @@ json.dumps(x)
 
 #### truth value testing
 
-- the built-in objects are considered false:
+- the built-in objects are considered `False`:
   - constants defined to be false: `None` and `False`
   - zero of any numeric type: `0`, `0.0`, `0j`, `Decimal(0)`, `Fraction(0, 1)`
   - empty sequences and collections: `''`, `()`, `{}`, `set()`, `range(0)`
@@ -187,12 +205,52 @@ json.dumps(x)
 
 #### sequence types - list, tuple, range
 
-#### Text Sequence Type - str (complete it later)
+##### list
 
-- str.isalnum()
-- str.isidentifier(): 1. it cannot be empty. 2. the 1st character must be a letter or an underscore. 3. the rest of the characters must be letters, undersocres, or digits.
-- iskeyword(str): Python keywords
-- str.swapcase()
-- str.ljust(), str.rjust(), str.center()
-- f'{a= !a|!r|!s|:.6f}': ascii(), repr(), str() and last 6 digits
-- str.maketrans(from, to), <str>.translate(...)
+- list constructor: `list('abc')` returns `['a', 'b', 'c']` and `list((1, 2, 3))` returns `[1, 2, 3]`
+- sort method sorts the list in place, using only `<` comparisons between items
+
+##### range
+
+- in comparison to the memory usuage, `range` has much more memory efficiency than `list` and `tuple`.
+
+#### string methods
+
+- `iskeyword(str)`, `str.capitalize()`, `str.center(width[, fillchar])`, `str.count(sub[, start[, end]])`, `str.encode(encoding='uft-8', erros='strict')`, `str.expandtabs(tabsize=)`, `str.find(sub[, start[, end]])`, `str.format(*args, **kwargs)`, `str.format_map(mapping, /)`, `str.index(sub[, start[, end]])`, `str.isascii()`, `str.isdecimal()`, `str.isdigit()`, `str.isidentifier()`, `str.islower()`, `str.isnumeric()`, `str.isprintable()`, `str.isspace()`, `str.istitle()`, `str.isupper()`, `str.join(iterable)`, `str.ljust(width[, fillchar])`, `str.removeprefix(prefix, /)`, `str.removesuffix(suffix, /)`, `str.replace(old, new, count=-1)`, `str.rjust(width[, fillchar])`, `str.rsplit(sep=None, maxsplit=-1)`, `str.split(sep=None, maxsplit=-1)`, `str.splitlines(keepends=False)`, `str.startswith(prefix[, start[, end]])`, `str.title()`, `str.upper()`, `str.zfill(width)`
+- `str.endswith(suffix[, start[, end]])`: suffix could be a tuple meaning either or
+- `str.casefold()`: similar to lower() but remove all case distinctions
+- `str.isalnum()`: return `True` if all characters in the string are alphanumeric and there is at least one character
+- `str.isalpha()`: return `True` if all characters in the string are alphabetic and there is at least one character
+- `str.lstrip([chars])`: removes any combination of the chars from the beginning of the string until it encounters a character that is not in the set if chars is given other empty characters from left side are removed, similar to `str.rstrip([chars])` and `str.strip([chars])`
+- `str.partition(sep)`: returns `(before, sep, after)`, similar with `str.rpartition(sep)`
+- `str.rfind(sub[, start[, end]])`: returns the highest index in the string where substring sub is found, similar to `str.rindex(sub[, start[, end]])` but raise error if not found
+- `str.swapcase()`: string with uppercase characters converted to lowercase and vice versa
+- `f'{a= !a|!r|!s|:.6f}'`: `ascii()`, `repr()`, `str()` and last 6 digits
+- `str.maketrans(from, to)`, `str.translate(table)`
+
+##### printf-style String Formatting
+
+- the conversion flag characters are:
+
+| Flag | Meaning                                                                                         |
+| ---- | ----------------------------------------------------------------------------------------------- |
+| '#'  | the value conversion will use the 'alternate form'                                              |
+| '0'  | the conversion will be zero padded for numeric values                                           |
+| '-'  | the converted value is left adjusted (overrides the '0' conversion if both are given)           |
+| ' '  | a blank should be left before a positive number or empty string produced by a signed conversion |
+| '+'  | a sign character will precede the conversion                                                    |
+
+- the conversion types are:
+  - `'d'`, `'i'`, `'o'`, `'u'`, `'x'`, `'X'`, `'e'`, `'E'`, `'f'`, `'F'`, `'g'`, `'G'`, `'c'`, `'r'`, `'s'`, `'a'`, `%`
+
+#### binary sequence types - bytes, bytearray, memoryview
+
+##### bytes - same operations with str
+
+- `bytes([source[, encoding[, errors]]])`: `b'string'`, `bytes.fromhex('...')`, `b'string'.hex([sep[, bytes_per_sep]])`
+
+##### bytearray - same operations with str
+
+- `bytearray(b'Hi!')`, `bytearray.fromhex('...')`, `bytearray(b'string').hex()`
+
+##### memory views
