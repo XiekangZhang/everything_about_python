@@ -123,8 +123,6 @@ area = 'living room'
 print(f"Debugging {bugs=} {count=} {area=}")
 ```
 
-- `str.rjust()`, `str.ljust()`, `str.center()`, and `str.zfill()`
-
 ```python
 import json
 x = [1, 'simple', 'list']
